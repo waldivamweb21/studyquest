@@ -1,0 +1,23 @@
+StudyQuest PWA - como publicar
+
+Esta pasta e o SITE do app (sem as questoes). Publique-a numa hospedagem com HTTPS.
+O arquivo questoes-mobile.json NAO deve ser enviado para a hospedagem: ele vai direto para o celular.
+
+OPCAO A - Netlify Drop (a mais simples)
+1. Abra https://app.netlify.com/drop e entre/crie uma conta gratuita.
+2. Arraste esta pasta (StudyQuest-PWA) para a area indicada.
+3. Copie o endereco gerado (https://algo.netlify.app).
+
+OPCAO B - GitHub Pages
+1. Crie um repositorio publico no GitHub e envie os arquivos desta pasta.
+2. Em Settings > Pages, escolha a branch principal e a pasta raiz (/).
+3. O endereco sera https://SEU_USUARIO.github.io/NOME_DO_REPOSITORIO/
+
+NO CELULAR ANDROID (Chrome)
+1. Abra o endereco do site.
+2. Menu (tres pontos) > Instalar app (ou Adicionar a tela inicial).
+3. Abra o StudyQuest pelo icone, toque em escolher arquivo e selecione questoes-mobile.json
+   (envie o arquivo para o celular por Google Drive, WhatsApp ou cabo).
+4. Pronto: depois disso funciona sem internet.
+
+Seu progresso fica no aparelho. Use Revisar > Copiar progresso para guardar um backup.

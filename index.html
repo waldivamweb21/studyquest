@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StudyQuest</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#526de5"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#17233f;--mut:#657087;--line:#e3e8f2;--blue:#526de5;--ok:#249b70;--bad:#d9534f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1524;--card:#192036;--ink:#e8ecf8;--mut:#93a0bd;--line:#2a3350}}
+:root[data-theme="dark"]{--bg:#0f1524;--card:#192036;--ink:#e8ecf8;--mut:#93a0bd;--line:#2a3350}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 12px 84px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:10px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+header h1{font-size:17px;margin:0;flex:1}
+.pomo{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 8px}
+.pomo b{font-variant-numeric:tabular-nums;font-size:16px}.pomo small{color:var(--mut);font-size:10px;text-transform:uppercase;font-weight:700}
+.pomo.brk{border-color:var(--ok)}
+#ps{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;display:none;gap:8px;flex-wrap:wrap;font-size:12px}
+#ps label{display:flex;align-items:center;gap:4px}#ps input[type=number]{width:52px}
+button{font:inherit;color:var(--ink);cursor:pointer}
+.pri,.ghost,.sm{border-radius:10px;border:1px solid var(--line);padding:9px 14px;background:var(--card)}
+.pri{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:650}.sm{padding:3px 9px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid .card{margin:0;text-align:center}.grid b{font-size:22px;display:block}
+.mut,small{color:var(--mut)}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:6px 0}.seg button{flex:1;border:0;background:var(--card);padding:8px 4px;font-size:12px}.seg .on{background:var(--blue);color:#fff}
+select,textarea{width:100%;padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin:4px 0;font:inherit}
+.opt{display:flex;gap:10px;width:100%;text-align:left;margin:6px 0;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card)}
+.opt.sel{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue) inset}.opt.ok{border-color:var(--ok);background:rgba(36,155,112,.15)}.opt.bad{border-color:var(--bad);background:rgba(217,83,79,.15)}
+.st,.ex{white-space:pre-line}.ex{font-size:13px;color:var(--mut);border-top:1px solid var(--line);margin-top:8px;padding-top:8px}
+.row{display:flex;gap:8px;justify-content:space-between;margin-top:10px}.bar{display:flex;justify-content:space-between}
+.don{display:flex;flex-direction:column;align-items:center}.don svg{width:140px;height:140px}.lg{width:100%;font-size:12px}.lg div{display:flex;gap:6px;padding:1px 0}.lg i{width:10px;height:10px;border-radius:50%;margin-top:4px;flex:none}.lg span{flex:1}
+table{width:100%;font-size:12px;border-collapse:collapse}td,th{padding:5px 3px;border-bottom:1px solid var(--line);text-align:left}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;background:none;padding:10px 0;font-size:11px;color:var(--mut)}nav .on{color:var(--blue);font-weight:700}
+#toast{position:fixed;left:12px;right:12px;bottom:calc(70px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px;border-radius:10px;display:none;z-index:9}
+</style></head><body>
+<header><h1>📚 StudyQuest</h1><div class="pomo" id="pomo"><span>🍅</span><b id="pt">25:00</b><small id="pp">Foco</small><button class="sm" id="pg" onclick="pToggle()">▶</button><button class="sm" onclick="pReset()">↺</button><button class="sm" onclick="togg('ps')">⚙</button></div>
+<div id="ps"><label>Foco<input type="number" id="cf" min="1"></label><label>Intervalo<input type="number" id="cb" min="1"></label><label>Longo<input type="number" id="cl" min="1"></label><label>A cada<input type="number" id="ce" min="2"></label><label><input type="checkbox" id="cs"> Bip</label><button class="sm" onclick="beep(1);setTimeout(()=>beep(2),800)">Testar</button></div></header>
+<main id="v"></main><div id="toast"></div>
+<nav><button data-v="dash" onclick="go('dash')">▦<br>Painel</button><button data-v="study" onclick="go('study')">◎<br>Estudar</button><button data-v="sim" onclick="go('sim')">▤<br>Simulado</button><button data-v="rev" onclick="go('rev')">↻<br>Revisar</button></nav>
+<script>
+const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let bank=[],byId=new Map();const LET=['A','B','C','D','E'];
+const setBank=b=>{bank=b;byId=new Map(b.map(q=>[q.i,q]))};
+const kv=window.__kv||{db:null,open(){return this.db||(this.db=new Promise((ok,no)=>{const r=indexedDB.open('sq',1);r.onupgradeneeded=()=>r.result.createObjectStore('k');r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}))},get(k){return this.open().then(d=>new Promise((ok,no)=>{const q=d.transaction('k').objectStore('k').get(k);q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)}))},set(k,v){return this.open().then(d=>new Promise((ok,no)=>{const x=d.transaction('k','readwrite');x.objectStore('k').put(v,k);x.oncomplete=()=>ok();x.onerror=()=>no(x.error)}))}};
+const KEY='sq-mobile-v1';let S={ans:[],marks:[],cfg:{f:25,b:5,l:15,e:4,s:1},day:{d:'',fd:0,cy:0}};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const dk=()=>new Date().toDateString();if(S.day.d!==dk())S.day={d:dk(),fd:0,cy:0};
+const isT=iso=>new Date(iso).toDateString()===dk();
+const toast=t=>{const e=$('#toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2200)};
+const togg=id=>{const e=$('#'+id);e.style.display=e.style.display==='flex'?'none':'flex'};
+const V=h=>{$('#v').innerHTML=h;scrollTo(0,0)};
+const F={study:'todas',sim:'todas'};
+const pool=(k,t,f)=>{const d=new Set(S.ans.map(a=>a.q));return bank.filter(q=>(k==='Todas'||q.k===k)&&(!t||q.t===t)&&(f==='todas'||(f==='sim')===d.has(q.i)))};
+const seg=sc=>`<div class="seg">${[['todas','Todas'],['nao','Não respondidas'],['sim','Respondidas']].map(([v,l])=>`<button class="${F[sc]===v?'on':''}" onclick="F.${sc}='${v}';go('${sc}')">${l}</button>`).join('')}</div>`;
+const PAL=['#526de5','#249b70','#e0803a','#a35bd6','#d9534f','#2aa6c9'];
+function donut(sg,c,sub){const t=sg.reduce((a,x)=>a+x.v,0),C=2*Math.PI*52;let o=0;
+ const r=t?sg.filter(x=>x.v>0).map(x=>{const l=x.v/t*C,e=`<circle cx="70" cy="70" r="52" fill="none" stroke="${x.c}" stroke-width="22" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 70 70)"/>`;o+=l;return e}).join(''):'<circle cx="70" cy="70" r="52" fill="none" stroke="#9aa5bd44" stroke-width="22"/>';
+ return `<div class="don"><svg viewBox="0 0 140 140"><text x="70" y="72" text-anchor="middle" font-size="22" font-weight="800" fill="currentColor">${c}</text><text x="70" y="88" text-anchor="middle" font-size="9" fill="#93a0bd">${sub}</text>${r}</svg><div class="lg">${sg.map(x=>`<div><i style="background:${x.c}"></i><span>${E(x.l)}</span><b>${x.v}${t?' · '+Math.round(x.v/t*100)+'%':''}</b></div>`).join('')}</div></div>`}
+function go(v){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));({dash,study:()=>cfgView('study'),sim:()=>cfgView('sim'),rev})[v]()}
+function dash(){const A=S.ans,T=A.filter(a=>isT(a.t)),ok=A.filter(a=>a.ok).length,pr=l=>[{l:'Acertos',v:l.filter(a=>a.ok).length,c:'#249b70'},{l:'Erros',v:l.filter(a=>!a.ok).length,c:'#d9534f'}];
+ const ds=[...new Set(bank.map(q=>q.d))],rows=ds.map((d,i)=>{const a=A.filter(x=>byId.get(x.q)?.d===d);return{d,n:a.length,h:a.filter(x=>isT(x.t)).length,p:a.length?Math.round(a.filter(x=>x.ok).length/a.length*100):0,c:PAL[i%6]}});
+ V(`<div class="grid"><div class="card"><b>${A.length}</b><small>respondidas</small></div><div class="card"><b>${A.length?Math.round(ok/A.length*100):0}%</b><small>acertos</small></div><div class="card"><b>${T.length}</b><small>hoje</small></div><div class="card"><b>${S.day.cy}</b><small>ciclos hoje</small></div></div>
+ <div class="card"><b>Acertos e erros</b>${donut(pr(A),A.length,'RESPOSTAS')}</div><div class="card"><b>Hoje</b>${donut(pr(T),T.length,'HOJE')}</div>
+ <div class="card"><b>Respondidas por disciplina</b>${donut(rows.map(r=>({l:r.d,v:r.n,c:r.c})),A.length,'RESPOSTAS')}<table><tr><th>Disciplina</th><th>Total</th><th>Hoje</th><th>Acerto</th></tr>${rows.map(r=>`<tr><td>${E(r.d)}</td><td>${r.n}</td><td>${r.h}</td><td>${r.p}%</td></tr>`).join('')}</table></div>`)}
+function cfgView(sc){const kinds=['Todas','Básicas','Específicas'],k=window['K'+sc]||'Todas';
+ const tp=[...new Set(bank.filter(q=>k==='Todas'||q.k===k).map(q=>q.t))].sort();
+ V(`<div class="card"><b>${sc==='study'?'Estudar por assunto':'Simulado completo'}</b>
+ <select onchange="window.K${sc}=this.value;go('${sc}')">${kinds.map(x=>`<option ${x===k?'selected':''}>${x}</option>`).join('')}</select>
+ ${sc==='study'?`<select id="tp"><option value="">Todos os assuntos</option>${tp.map(t=>`<option>${E(t)}</option>`).join('')}</select>`:`<select id="nq"><option>10</option><option selected>20</option><option>30</option><option>50</option></select>`}
+ ${seg(sc)}<p class="mut" id="cnt"></p><button class="pri" style="width:100%" onclick="startFrom('${sc}')">Começar</button></div>`);
+ const upd=()=>{$('#cnt').textContent=pool(k,sc==='study'?$('#tp').value:'',F[sc]).length+' questões disponíveis'};upd();if(sc==='study')$('#tp').onchange=upd}
+function startFrom(sc){const k=window['K'+sc]||'Todas';let l=pool(k,sc==='study'?$('#tp').value:'',F[sc]);
+ if(sc==='sim'){l=l.filter(q=>q.a).sort(()=>Math.random()-.5).slice(0,+$('#nq').value)}
+ begin(l,sc==='study'?'study':'sim',sc==='study'?'Estudo':'Simulado')}
+let run=null,pick=null;
+function begin(l,mode,label){if(!l.length)return toast('Nenhuma questão nesta seleção');run={l,i:0,mode,label,res:[],t0:Date.now(),lock:false};rq()}
+function rq(){const q=run.l[run.i];pick=null;run.lock=false;run.q0=Date.now();
+ V(`<div class="bar"><b>${E(run.label)}</b><span>${run.i+1}/${run.l.length}</span></div><div class="card"><small>${E(q.d)} · ${E(q.t)} · ${E(q.n||'')}</small><p class="st">${E(q.s)}</p>
+ ${LET.filter(l=>q.o[l]).map(l=>`<button class="opt" id="o${l}" onclick="choose('${l}')"><b>${l}</b><span>${E(q.o[l])}</span></button>`).join('')}<div id="fb"></div>
+ <div class="row"><button class="ghost" onclick="mark(this)">${S.marks.includes(q.i)?'★ Marcada':'☆ Marcar'}</button><button class="pri" id="go" onclick="submit()">Responder</button></div></div><button class="ghost" onclick="finish()">Encerrar</button>`)}
+function choose(l){if(run.lock)return;pick=l;document.querySelectorAll('.opt').forEach(b=>b.classList.toggle('sel',b.id==='o'+l))}
+function mark(b){const q=run.l[run.i],i=S.marks.indexOf(q.i);i<0?S.marks.push(q.i):S.marks.splice(i,1);save();b.textContent=i<0?'★ Marcada':'☆ Marcar'}
+function submit(){if(run.lock)return next();if(!pick)return toast('Escolha uma alternativa');
+ const q=run.l[run.i],ok=pick===q.a;S.ans.push({q:q.i,a:pick,ok,t:new Date().toISOString(),ms:Date.now()-run.q0,m:run.mode});save();run.res.push({q:q.i,a:pick,ok});
+ if(run.mode==='sim')return next();run.lock=true;
+ document.querySelectorAll('.opt').forEach(b=>{b.classList.remove('sel');if(b.id==='o'+q.a)b.classList.add('ok');else if(b.id==='o'+pick)b.classList.add('bad')});
+ $('#fb').innerHTML=`<p><b>${ok?'✔ Correto!':'✘ Errado. Gabarito: '+E(q.a)}</b></p><div class="ex">${E(q.e)}</div>`;$('#go').textContent=run.i+1>=run.l.length?'Finalizar':'Próxima →'}
+function next(){run.i+1>=run.l.length?finish():(run.i++,rq())}
+function finish(){const r=run.res,ok=r.filter(x=>x.ok).length,w=r.filter(x=>!x.ok);
+ V(`<div class="card"><b>${E(run.label)} concluído</b><p>${ok} de ${r.length} (${r.length?Math.round(ok/r.length*100):0}%) em ${Math.max(1,Math.round((Date.now()-run.t0)/60000))} min</p></div>
+ ${w.map(x=>{const q=byId.get(x.q);return `<div class="card"><small>${E(q.t)}</small><p class="st">${E(q.s.slice(0,220))}${q.s.length>220?'…':''}</p><p>Você: <b>${E(x.a)}</b> · Gabarito: <b>${E(q.a)}</b></p></div>`}).join('')}`);run=null}
+function rev(){const bad=new Set(S.ans.filter(a=>!a.ok).map(a=>a.q)),l=bank.filter(q=>bad.has(q.i)||S.marks.includes(q.i));
+ V(`<div class="card"><b>Revisar erros e marcadas</b><p class="mut">${l.length} questão(ões)</p><button class="pri" style="width:100%" onclick="begin(bank.filter(q=>new Set(S.ans.filter(a=>!a.ok).map(a=>a.q)).has(q.i)||S.marks.includes(q.i)),'study','Revisão')">Estudar estas questões</button></div>
+ <div class="card"><b>Backup do progresso</b><p class="mut">Os dados ficam só neste navegador. Copie o texto e guarde-o (por exemplo, nas suas notas).</p><textarea id="bk" rows="4"></textarea><div class="row"><button class="ghost" onclick="bkOut()">Copiar progresso</button><button class="ghost" onclick="bkIn()">Restaurar do texto</button></div></div>
+ <div class="card"><b>Banco de questões</b><p class="mut">${bank.length} questões neste aparelho.</p><button class="ghost" onclick="imp()">Importar outro banco</button></div>`)}
+function bkOut(){const t=JSON.stringify(S);$('#bk').value=t;$('#bk').select();try{navigator.clipboard.writeText(t).then(()=>toast('Copiado'),()=>toast('Selecione e copie o texto'))}catch(e){toast('Selecione e copie o texto')}}
+function bkIn(){try{const d=JSON.parse($('#bk').value);if(!Array.isArray(d.ans))throw 0;S=Object.assign(S,d);save();toast('Progresso restaurado');go('dash')}catch(e){toast('Texto de backup inválido')}}
+function imp(){V(`<div class="card"><b>Carregar o banco de questões</b><p class="mut">Escolha o arquivo <b>questoes-mobile.json</b> (enviado por Drive, WhatsApp ou cabo). Isso é feito uma única vez; depois o app funciona sem internet.</p><input type="file" id="bf" accept=".json,application/json"><p id="bm" class="mut"></p></div>`);
+ $('#bf').onchange=e=>loadFile(e.target.files[0])}
+async function loadFile(f){const m=$('#bm');try{const b=JSON.parse(await f.text());
+ if(!Array.isArray(b)||!b.length||!b.every(q=>q.i&&q.s&&q.o))throw 0;await kv.set('bank',b);setBank(b);toast(b.length+' questões carregadas');go('dash')}catch(e){m.textContent='Arquivo inválido. Use o questoes-mobile.json gerado para o StudyQuest.'}}
+// ---- pomodoro ----
+const P={ph:'f',rem:0,run:false,end:0,tm:null,au:null},pm=p=>(p==='f'?S.cfg.f:p==='l'?S.cfg.l:S.cfg.b)*60;P.rem=pm('f');
+function beep(k){if(!S.cfg.s)return;try{const A=window.AudioContext||window.webkitAudioContext;P.au=P.au||new A();P.au.resume();const t0=P.au.currentTime+.02;
+ (k===1?[[880,0,.18],[880,.3,.18]]:[[660,0,.2],[880,.28,.2],[1175,.56,.35]]).forEach(([f,a,l])=>{const o=P.au.createOscillator(),g=P.au.createGain();o.frequency.value=f;g.gain.setValueAtTime(.0001,t0+a);g.gain.exponentialRampToValueAtTime(.35,t0+a+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+a+l);o.connect(g).connect(P.au.destination);o.start(t0+a);o.stop(t0+a+l+.05)})}catch(e){}}
+function pr(){const m=Math.floor(P.rem/60),s=P.rem%60;$('#pt').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');$('#pp').textContent=P.ph==='f'?'Foco':P.ph==='l'?'Longo':'Intervalo';$('#pomo').classList.toggle('brk',P.ph!=='f');$('#pg').textContent=P.run?'⏸':'▶'}
+function pTick(){if(!P.run)return;P.rem=Math.max(0,Math.ceil((P.end-Date.now())/1000));if(P.rem>0)return pr();
+ if(P.ph==='f'){S.day.fd++;beep(1);P.ph=S.day.fd%S.cfg.e===0?'l':'b';P.rem=pm(P.ph);P.end=Date.now()+P.rem*1000}else{S.day.cy++;beep(2);P.ph='f';P.rem=pm('f');pStop()}save();pr()}
+function pToggle(){if(P.run)return pStop();try{const A=window.AudioContext||window.webkitAudioContext;P.au=P.au||new A();P.au.resume()}catch(e){}P.run=true;P.end=Date.now()+P.rem*1000;P.tm=setInterval(pTick,500);pr()}
+function pStop(){P.run=false;clearInterval(P.tm);pr()}
+function pReset(){pStop();P.ph='f';P.rem=pm('f');pr()}
+document.addEventListener('visibilitychange',pTick);
+[['cf','f'],['cb','b'],['cl','l'],['ce','e']].forEach(([id,k])=>{const e=$('#'+id);e.value=S.cfg[k];e.onchange=()=>{S.cfg[k]=Math.max(1,+e.value||1);save();if(!P.run){P.rem=pm(P.ph);pr()}}});
+$('#cs').checked=!!S.cfg.s;$('#cs').onchange=e=>{S.cfg.s=e.target.checked?1:0;save()};
+pr();try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+kv.get('bank').then(b=>{if(b&&b.length){setBank(b);go('dash')}else imp()}).catch(imp);
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
