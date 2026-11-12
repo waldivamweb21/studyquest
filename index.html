@@ -35,8 +35,8 @@ nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);b
 nav button{flex:1;border:0;background:none;padding:10px 0;font-size:11px;color:var(--mut)}nav .on{color:var(--blue);font-weight:700}
 #toast{position:fixed;left:12px;right:12px;bottom:calc(70px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px;border-radius:10px;display:none;z-index:9}
 </style></head><body>
-<header><h1>📚 StudyQuest</h1><div class="pomo" id="pomo"><span>🍅</span><b id="pt">25:00</b><small id="pp">Foco</small><button class="sm" id="pg" onclick="pToggle()">▶</button><button class="sm" onclick="pReset()">↺</button><button class="sm" onclick="togg('ps')">⚙</button></div>
-<div id="ps"><label>Foco<input type="number" id="cf" min="1"></label><label>Intervalo<input type="number" id="cb" min="1"></label><label>Longo<input type="number" id="cl" min="1"></label><label>A cada<input type="number" id="ce" min="2"></label><label><input type="checkbox" id="cs"> Bip</label><button class="sm" onclick="beep(1);setTimeout(()=>beep(2),800)">Testar</button></div></header>
+<header><h1>📚 StudyQuest</h1><div class="pomo" id="pomo"><span>🍅</span><b id="pt">25:00</b><small id="pp">Foco</small><button class="sm" id="pg" onclick="pToggle()">▶</button><button class="sm" onclick="pReset()">↺</button><button class="sm" onclick="togg('ps')">⚙</button></div><button class="sm" onclick="theme()" title="Modo escuro/claro">🌓</button>
+<div id="ps"><label>Foco<input type="number" id="cf" min="1"></label><label>Intervalo<input type="number" id="cb" min="1"></label><label>Longo<input type="number" id="cl" min="1"></label><label>A cada<input type="number" id="ce" min="2"></label><label><input type="checkbox" id="cs"> Bip</label><label><input type="checkbox" id="ca"> Iniciar com as questões</label><button class="sm" onclick="beep(1);setTimeout(()=>beep(2),800)">Testar</button></div></header>
 <main id="v"></main><div id="toast"></div>
 <nav><button data-v="dash" onclick="go('dash')">▦<br>Painel</button><button data-v="study" onclick="go('study')">◎<br>Estudar</button><button data-v="sim" onclick="go('sim')">▤<br>Simulado</button><button data-v="rev" onclick="go('rev')">↻<br>Revisar</button></nav>
 <script>
@@ -44,10 +44,13 @@ const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"]/g,c=>({'
 let bank=[],byId=new Map();const LET=['A','B','C','D','E'];
 const setBank=b=>{bank=b;byId=new Map(b.map(q=>[q.i,q]))};
 const kv=window.__kv||{db:null,open(){return this.db||(this.db=new Promise((ok,no)=>{const r=indexedDB.open('sq',1);r.onupgradeneeded=()=>r.result.createObjectStore('k');r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}))},get(k){return this.open().then(d=>new Promise((ok,no)=>{const q=d.transaction('k').objectStore('k').get(k);q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)}))},set(k,v){return this.open().then(d=>new Promise((ok,no)=>{const x=d.transaction('k','readwrite');x.objectStore('k').put(v,k);x.oncomplete=()=>ok();x.onerror=()=>no(x.error)}))}};
-const KEY='sq-mobile-v1';let S={ans:[],marks:[],cfg:{f:25,b:5,l:15,e:4,s:1},day:{d:'',fd:0,cy:0}};
+const KEY='sq-mobile-v1';let S={ans:[],marks:[],cfg:{f:25,b:5,l:15,e:4,s:1,a:1},day:{d:'',fd:0,cy:0,fs:0},run:null,theme:''};
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
-const dk=()=>new Date().toDateString();if(S.day.d!==dk())S.day={d:dk(),fd:0,cy:0};
+const dk=()=>new Date().toDateString();S.cfg=Object.assign({a:1},S.cfg);if(S.day.d!==dk())S.day={d:dk(),fd:0,cy:0,fs:0};
+const applyTheme=()=>{if(S.theme&&document.documentElement)document.documentElement.dataset.theme=S.theme};
+function theme(){const dk=S.theme?S.theme==='dark':window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches;S.theme=dk?'light':'dark';applyTheme();save()}
+applyTheme();
 const isT=iso=>new Date(iso).toDateString()===dk();
 const toast=t=>{const e=$('#toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2200)};
 const togg=id=>{const e=$('#'+id);e.style.display=e.style.display==='flex'?'none':'flex'};
@@ -60,11 +63,22 @@ function donut(sg,c,sub){const t=sg.reduce((a,x)=>a+x.v,0),C=2*Math.PI*52;let o=
  const r=t?sg.filter(x=>x.v>0).map(x=>{const l=x.v/t*C,e=`<circle cx="70" cy="70" r="52" fill="none" stroke="${x.c}" stroke-width="22" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 70 70)"/>`;o+=l;return e}).join(''):'<circle cx="70" cy="70" r="52" fill="none" stroke="#9aa5bd44" stroke-width="22"/>';
  return `<div class="don"><svg viewBox="0 0 140 140"><text x="70" y="72" text-anchor="middle" font-size="22" font-weight="800" fill="currentColor">${c}</text><text x="70" y="88" text-anchor="middle" font-size="9" fill="#93a0bd">${sub}</text>${r}</svg><div class="lg">${sg.map(x=>`<div><i style="background:${x.c}"></i><span>${E(x.l)}</span><b>${x.v}${t?' · '+Math.round(x.v/t*100)+'%':''}</b></div>`).join('')}</div></div>`}
 function go(v){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));({dash,study:()=>cfgView('study'),sim:()=>cfgView('sim'),rev})[v]()}
-function dash(){const A=S.ans,T=A.filter(a=>isT(a.t)),ok=A.filter(a=>a.ok).length,pr=l=>[{l:'Acertos',v:l.filter(a=>a.ok).length,c:'#249b70'},{l:'Erros',v:l.filter(a=>!a.ok).length,c:'#d9534f'}];
- const ds=[...new Set(bank.map(q=>q.d))],rows=ds.map((d,i)=>{const a=A.filter(x=>byId.get(x.q)?.d===d);return{d,n:a.length,h:a.filter(x=>isT(x.t)).length,p:a.length?Math.round(a.filter(x=>x.ok).length/a.length*100):0,c:PAL[i%6]}});
- V(`<div class="grid"><div class="card"><b>${A.length}</b><small>respondidas</small></div><div class="card"><b>${A.length?Math.round(ok/A.length*100):0}%</b><small>acertos</small></div><div class="card"><b>${T.length}</b><small>hoje</small></div><div class="card"><b>${S.day.cy}</b><small>ciclos hoje</small></div></div>
+const fmt=ms=>{const m=Math.round(ms/60000);return m<60?m+' min':Math.floor(m/60)+' h '+String(m%60).padStart(2,'0')+' min'};
+const grp=(f,l=S.ans)=>{const m=new Map();l.forEach(a=>{const q=byId.get(a.q);if(!q)return;const k=f(q),o=m.get(k)||{n:0,ok:0,k};o.n++;if(a.ok)o.ok++;m.set(k,o)});return[...m.values()]};
+let RM='d';
+function radar(it){const N=it.length;if(N<3)return '<p class="mut">Responda questões de pelo menos 3 itens para ver o radar.</p>';
+ const R=92,cx=150,cy=118,pt=(i,r)=>[cx+r*Math.sin(2*Math.PI*i/N),cy-r*Math.cos(2*Math.PI*i/N)].map(x=>x.toFixed(1)),poly=f=>it.map((x,i)=>pt(i,f(x)).join(',')).join(' ');
+ return `<svg viewBox="0 0 300 236" style="width:100%;max-width:340px">${[25,50,75,100].map(v=>`<polygon points="${poly(()=>R*v/100)}" fill="none" stroke="#9aa5bd66"/>`).join('')}${it.map((x,i)=>{const p=pt(i,R);return `<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="#9aa5bd66"/>`}).join('')}<polygon points="${poly(x=>R*x.p/100)}" fill="#526de544" stroke="#526de5" stroke-width="2"/>${it.map((x,i)=>{const a=pt(i,R*x.p/100),c=pt(i,R+13);return `<circle cx="${a[0]}" cy="${a[1]}" r="3" fill="#526de5"/><text x="${c[0]}" y="${c[1]}" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="currentColor">${i+1}</text>`}).join('')}<text x="${cx+3}" y="${cy-R*.5+3}" font-size="8" fill="#93a0bd">50%</text><text x="${cx+3}" y="${cy-R+3}" font-size="8" fill="#93a0bd">100%</text></svg><div class="lg">${it.map((x,i)=>`<div><b>${i+1}</b><span>${E(x.l)}</span><b>${x.p}% · ${x.n}</b></div>`).join('')}</div>`}
+function dash(){const A=S.ans,T=A.filter(a=>isT(a.t)),ok=A.filter(a=>a.ok).length,pr=l=>[{l:'Acertos',v:l.filter(a=>a.ok).length,c:'#249b70'},{l:'Erros',v:l.filter(a=>!a.ok).length,c:'#d9534f'}],
+ ms=(l,m)=>l.filter(a=>a.m===m).reduce((s,a)=>s+(a.ms||0),0),sm=l=>l.reduce((s,a)=>s+(a.ms||0),0);
+ const it=(RM==='d'?grp(q=>q.d):grp(q=>q.t).sort((a,b)=>b.n-a.n).slice(0,12)).map(x=>({l:x.k,n:x.n,p:Math.round(x.ok/x.n*100)}));
+ const tp=grp(q=>q.d+'|'+q.t).sort((a,b)=>a.k<b.k?-1:1);
+ V(`${S.run?`<div class="card"><b>Continuar de onde parou</b><p class="mut">${E(S.run.label)} · questão ${S.run.i+1} de ${S.run.ids.length}</p><button class="pri" style="width:100%" onclick="resume()">Continuar</button></div>`:''}
+ <div class="grid"><div class="card"><b>${A.length}</b><small>respondidas</small></div><div class="card"><b>${A.length?Math.round(ok/A.length*100):0}%</b><small>acertos</small></div><div class="card"><b>${T.length}</b><small>hoje</small></div><div class="card"><b>${S.day.cy}</b><small>ciclos hoje</small></div><div class="card"><b>${fmt((S.day.fs||0)*1000)}</b><small>foco hoje</small></div><div class="card"><b>${fmt(sm(T))}</b><small>em questões hoje</small></div></div>
+ <div class="card"><b>Tempo por atividade</b><table><tr><th></th><th>Questões</th><th>Tempo total</th><th>Hoje</th></tr>${[['study','Estudo'],['sim','Simulado'],['rev','Revisão']].map(([m,n])=>`<tr><td>${n}</td><td>${A.filter(a=>a.m===m).length}</td><td>${fmt(ms(A,m))}</td><td>${fmt(ms(T,m))}</td></tr>`).join('')}</table></div>
  <div class="card"><b>Acertos e erros</b>${donut(pr(A),A.length,'RESPOSTAS')}</div><div class="card"><b>Hoje</b>${donut(pr(T),T.length,'HOJE')}</div>
- <div class="card"><b>Respondidas por disciplina</b>${donut(rows.map(r=>({l:r.d,v:r.n,c:r.c})),A.length,'RESPOSTAS')}<table><tr><th>Disciplina</th><th>Total</th><th>Hoje</th><th>Acerto</th></tr>${rows.map(r=>`<tr><td>${E(r.d)}</td><td>${r.n}</td><td>${r.h}</td><td>${r.p}%</td></tr>`).join('')}</table></div>`)}
+ <div class="card"><b>Radar de acertos</b><div class="seg"><button class="${RM==='d'?'on':''}" onclick="RM='d';dash()">Disciplinas</button><button class="${RM==='a'?'on':''}" onclick="RM='a';dash()">Assuntos (12 mais)</button></div><p class="mut">Quanto mais perto da borda, maior a taxa de acertos.</p><div class="don">${radar(it)}</div></div>
+ <div class="card"><b>Acertos e erros por assunto</b>${tp.length?`<table><tr><th>Assunto</th><th>✔</th><th>✘</th><th>%</th></tr>${tp.map(x=>{const [d,t]=x.k.split('|');return `<tr><td>${E(t)}<br><small>${E(d)}</small></td><td>${x.ok}</td><td>${x.n-x.ok}</td><td>${Math.round(x.ok/x.n*100)}%</td></tr>`}).join('')}</table>`:'<p class="mut">Responda questões para ver o desempenho por assunto.</p>'}</div>`)}
 function cfgView(sc){const kinds=['Todas','Básicas','Específicas'],k=window['K'+sc]||'Todas';
  const tp=[...new Set(bank.filter(q=>k==='Todas'||q.k===k).map(q=>q.t))].sort();
  V(`<div class="card"><b>${sc==='study'?'Estudar por assunto':'Simulado completo'}</b>
@@ -75,25 +89,33 @@ function cfgView(sc){const kinds=['Todas','Básicas','Específicas'],k=window['K
 function startFrom(sc){const k=window['K'+sc]||'Todas';let l=pool(k,sc==='study'?$('#tp').value:'',F[sc]);
  if(sc==='sim'){l=l.filter(q=>q.a).sort(()=>Math.random()-.5).slice(0,+$('#nq').value)}
  begin(l,sc==='study'?'study':'sim',sc==='study'?'Estudo':'Simulado')}
-let run=null,pick=null;
-function begin(l,mode,label){if(!l.length)return toast('Nenhuma questão nesta seleção');run={l,i:0,mode,label,res:[],t0:Date.now(),lock:false};rq()}
-function rq(){const q=run.l[run.i];pick=null;run.lock=false;run.q0=Date.now();
+let run=null,RK='Básicas';const cur=()=>run.l[run.i];
+const rsave=()=>{S.run={ids:run.l.map(q=>q.i),i:run.i,mode:run.mode,label:run.label,sel:run.sel,done:run.done,ms:run.ms,t0:run.t0};save()};
+const auto=()=>{if(S.cfg.a&&!P.run&&P.ph==='f')pToggle()};
+function begin(l,mode,label){if(!l.length)return toast('Nenhuma questão nesta seleção');run={l,i:0,mode,label,sel:{},done:{},ms:{},t0:Date.now(),q0:Date.now()};auto();rsave();rq()}
+function resume(){const r=S.run,l=(r.ids||[]).map(i=>byId.get(i)).filter(Boolean);if(!l.length){S.run=null;save();return go('dash')}
+ run={l,i:Math.min(r.i,l.length-1),mode:r.mode,label:r.label,sel:r.sel||{},done:r.done||{},ms:r.ms||{},t0:r.t0||Date.now(),q0:Date.now()};auto();rq()}
+const acc=()=>{const q=cur();run.ms[q.i]=(run.ms[q.i]||0)+Date.now()-run.q0;run.q0=Date.now()};
+const fbH=q=>{const ok=run.sel[q.i]===q.a;return `<p><b>${ok?'✔ Correto!':'✘ Errado. Gabarito: '+E(q.a)}</b></p><div class="ex">${E(q.e)}</div>`};
+function rq(){const q=cur(),dn=run.done[q.i],s=run.sel[q.i],sim=run.mode==='sim';run.q0=Date.now();
  V(`<div class="bar"><b>${E(run.label)}</b><span>${run.i+1}/${run.l.length}</span></div><div class="card"><small>${E(q.d)} · ${E(q.t)} · ${E(q.n||'')}</small><p class="st">${E(q.s)}</p>
- ${LET.filter(l=>q.o[l]).map(l=>`<button class="opt" id="o${l}" onclick="choose('${l}')"><b>${l}</b><span>${E(q.o[l])}</span></button>`).join('')}<div id="fb"></div>
- <div class="row"><button class="ghost" onclick="mark(this)">${S.marks.includes(q.i)?'★ Marcada':'☆ Marcar'}</button><button class="pri" id="go" onclick="submit()">Responder</button></div></div><button class="ghost" onclick="finish()">Encerrar</button>`)}
-function choose(l){if(run.lock)return;pick=l;document.querySelectorAll('.opt').forEach(b=>b.classList.toggle('sel',b.id==='o'+l))}
-function mark(b){const q=run.l[run.i],i=S.marks.indexOf(q.i);i<0?S.marks.push(q.i):S.marks.splice(i,1);save();b.textContent=i<0?'★ Marcada':'☆ Marcar'}
-function submit(){if(run.lock)return next();if(!pick)return toast('Escolha uma alternativa');
- const q=run.l[run.i],ok=pick===q.a;S.ans.push({q:q.i,a:pick,ok,t:new Date().toISOString(),ms:Date.now()-run.q0,m:run.mode});save();run.res.push({q:q.i,a:pick,ok});
- if(run.mode==='sim')return next();run.lock=true;
- document.querySelectorAll('.opt').forEach(b=>{b.classList.remove('sel');if(b.id==='o'+q.a)b.classList.add('ok');else if(b.id==='o'+pick)b.classList.add('bad')});
- $('#fb').innerHTML=`<p><b>${ok?'✔ Correto!':'✘ Errado. Gabarito: '+E(q.a)}</b></p><div class="ex">${E(q.e)}</div>`;$('#go').textContent=run.i+1>=run.l.length?'Finalizar':'Próxima →'}
-function next(){run.i+1>=run.l.length?finish():(run.i++,rq())}
-function finish(){const r=run.res,ok=r.filter(x=>x.ok).length,w=r.filter(x=>!x.ok);
- V(`<div class="card"><b>${E(run.label)} concluído</b><p>${ok} de ${r.length} (${r.length?Math.round(ok/r.length*100):0}%) em ${Math.max(1,Math.round((Date.now()-run.t0)/60000))} min</p></div>
- ${w.map(x=>{const q=byId.get(x.q);return `<div class="card"><small>${E(q.t)}</small><p class="st">${E(q.s.slice(0,220))}${q.s.length>220?'…':''}</p><p>Você: <b>${E(x.a)}</b> · Gabarito: <b>${E(q.a)}</b></p></div>`}).join('')}`);run=null}
-function rev(){const bad=new Set(S.ans.filter(a=>!a.ok).map(a=>a.q)),l=bank.filter(q=>bad.has(q.i)||S.marks.includes(q.i));
- V(`<div class="card"><b>Revisar erros e marcadas</b><p class="mut">${l.length} questão(ões)</p><button class="pri" style="width:100%" onclick="begin(bank.filter(q=>new Set(S.ans.filter(a=>!a.ok).map(a=>a.q)).has(q.i)||S.marks.includes(q.i)),'study','Revisão')">Estudar estas questões</button></div>
+ ${LET.filter(l=>q.o[l]).map(l=>`<button class="opt ${dn?(l===q.a?'ok':l===s?'bad':''):(l===s?'sel':'')}" id="o${l}" onclick="choose('${l}')"><b>${l}</b><span>${E(q.o[l])}</span></button>`).join('')}<div id="fb">${dn?fbH(q):''}</div>
+ <div class="row"><button class="ghost" onclick="mark(this)">${S.marks.includes(q.i)?'★ Marcada':'☆ Marcar'}</button>${sim||dn?'':'<button class="pri" onclick="submit()">Responder</button>'}</div></div>
+ <div class="row"><button class="ghost" onclick="mv(-1)" ${run.i?'':'disabled'}>← Anterior</button><button class="ghost" onclick="mv(1)" ${run.i+1>=run.l.length?'disabled':''}>Próxima →</button></div>
+ <button class="pri" style="width:100%;margin-top:8px" onclick="finish()">${sim?'Finalizar simulado':'Encerrar e ver resultado'}</button>`)}
+function choose(l){const q=cur();if(run.done[q.i])return;run.sel[q.i]=l;document.querySelectorAll('.opt').forEach(b=>b.classList.toggle('sel',b.id==='o'+l));rsave()}
+function mark(b){const q=cur(),i=S.marks.indexOf(q.i);i<0?S.marks.push(q.i):S.marks.splice(i,1);save();b.textContent=i<0?'★ Marcada':'☆ Marcar'}
+function rec(q){S.ans.push({q:q.i,a:run.sel[q.i],ok:run.sel[q.i]===q.a,t:new Date().toISOString(),ms:run.ms[q.i]||0,m:run.mode});run.done[q.i]=true;save()}
+function submit(){const q=cur();if(!run.sel[q.i])return toast('Escolha uma alternativa');acc();rec(q);rsave();rq()}
+function mv(d){acc();run.i=Math.max(0,Math.min(run.l.length-1,run.i+d));rsave();rq()}
+function finish(){acc();if(run.mode==='sim')run.l.forEach(q=>{if(run.sel[q.i]&&!run.done[q.i])rec(q)});
+ const an=run.l.filter(q=>run.done[q.i]),ok=an.filter(q=>run.sel[q.i]===q.a).length,w=an.filter(q=>run.sel[q.i]!==q.a),tot=Object.values(run.ms).reduce((a,b)=>a+b,0);
+ V(`<div class="card"><b>${E(run.label)} concluído</b><p>${ok} acertos · ${w.length} erros · ${run.l.length-an.length} em branco</p><p class="mut">Tempo nas questões: ${fmt(tot)} (${an.length?Math.round(tot/an.length/1000):0} s por questão)</p></div>
+ ${w.map(q=>`<div class="card"><small>${E(q.t)}</small><p class="st">${E(q.s.slice(0,220))}${q.s.length>220?'…':''}</p><p>Você: <b>${E(run.sel[q.i])}</b> · Gabarito: <b>${E(q.a)}</b></p></div>`).join('')}`);S.run=null;save();run=null}
+const revL=k=>{const bad=new Set(S.ans.filter(a=>!a.ok).map(a=>a.q));return bank.filter(q=>q.k===k&&(bad.has(q.i)||S.marks.includes(q.i)))};
+function rev(){const l=revL(RK),bad=new Set(S.ans.filter(a=>!a.ok).map(a=>a.q));
+ V(`<div class="card"><b>Revisar erros e marcadas</b><div class="seg">${['Básicas','Específicas'].map(k=>`<button class="${RK===k?'on':''}" onclick="RK='${k}';rev()">${k} (${revL(k).length})</button>`).join('')}</div><button class="pri" style="width:100%" onclick="begin(revL(RK),'rev','Revisão · '+RK)">Estudar estas ${l.length} questões</button></div>
+ ${l.slice(0,40).map(q=>`<div class="card"><small>${bad.has(q.i)?'✘ errada ':''}${S.marks.includes(q.i)?'★ marcada ':''}· ${E(q.t)}</small><p class="st">${E(q.s.slice(0,160))}${q.s.length>160?'…':''}</p></div>`).join('')}
  <div class="card"><b>Backup do progresso</b><p class="mut">Os dados ficam só neste navegador. Copie o texto e guarde-o (por exemplo, nas suas notas).</p><textarea id="bk" rows="4"></textarea><div class="row"><button class="ghost" onclick="bkOut()">Copiar progresso</button><button class="ghost" onclick="bkIn()">Restaurar do texto</button></div></div>
  <div class="card"><b>Banco de questões</b><p class="mut">${bank.length} questões neste aparelho.</p><button class="ghost" onclick="imp()">Importar outro banco</button></div>`)}
 function bkOut(){const t=JSON.stringify(S);$('#bk').value=t;$('#bk').select();try{navigator.clipboard.writeText(t).then(()=>toast('Copiado'),()=>toast('Selecione e copie o texto'))}catch(e){toast('Selecione e copie o texto')}}
@@ -107,14 +129,15 @@ const P={ph:'f',rem:0,run:false,end:0,tm:null,au:null},pm=p=>(p==='f'?S.cfg.f:p=
 function beep(k){if(!S.cfg.s)return;try{const A=window.AudioContext||window.webkitAudioContext;P.au=P.au||new A();P.au.resume();const t0=P.au.currentTime+.02;
  (k===1?[[880,0,.18],[880,.3,.18]]:[[660,0,.2],[880,.28,.2],[1175,.56,.35]]).forEach(([f,a,l])=>{const o=P.au.createOscillator(),g=P.au.createGain();o.frequency.value=f;g.gain.setValueAtTime(.0001,t0+a);g.gain.exponentialRampToValueAtTime(.35,t0+a+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+a+l);o.connect(g).connect(P.au.destination);o.start(t0+a);o.stop(t0+a+l+.05)})}catch(e){}}
 function pr(){const m=Math.floor(P.rem/60),s=P.rem%60;$('#pt').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');$('#pp').textContent=P.ph==='f'?'Foco':P.ph==='l'?'Longo':'Intervalo';$('#pomo').classList.toggle('brk',P.ph!=='f');$('#pg').textContent=P.run?'⏸':'▶'}
+const fsAdd=()=>{if(P.st){S.day.fs=(S.day.fs||0)+Math.round((Date.now()-P.st)/1000);P.st=0;save()}};
 function pTick(){if(!P.run)return;P.rem=Math.max(0,Math.ceil((P.end-Date.now())/1000));if(P.rem>0)return pr();
- if(P.ph==='f'){S.day.fd++;beep(1);P.ph=S.day.fd%S.cfg.e===0?'l':'b';P.rem=pm(P.ph);P.end=Date.now()+P.rem*1000}else{S.day.cy++;beep(2);P.ph='f';P.rem=pm('f');pStop()}save();pr()}
-function pToggle(){if(P.run)return pStop();try{const A=window.AudioContext||window.webkitAudioContext;P.au=P.au||new A();P.au.resume()}catch(e){}P.run=true;P.end=Date.now()+P.rem*1000;P.tm=setInterval(pTick,500);pr()}
-function pStop(){P.run=false;clearInterval(P.tm);pr()}
+ if(P.ph==='f'){fsAdd();S.day.fd++;beep(1);P.ph=S.day.fd%S.cfg.e===0?'l':'b';P.rem=pm(P.ph);P.end=Date.now()+P.rem*1000}else{S.day.cy++;beep(2);P.ph='f';P.rem=pm('f');pStop()}save();pr()}
+function pToggle(){if(P.run)return pStop();try{const A=window.AudioContext||window.webkitAudioContext;P.au=P.au||new A();P.au.resume()}catch(e){}P.run=true;P.st=P.ph==='f'?Date.now():0;P.end=Date.now()+P.rem*1000;P.tm=setInterval(pTick,500);pr()}
+function pStop(){fsAdd();P.run=false;clearInterval(P.tm);pr()}
 function pReset(){pStop();P.ph='f';P.rem=pm('f');pr()}
 document.addEventListener('visibilitychange',pTick);
 [['cf','f'],['cb','b'],['cl','l'],['ce','e']].forEach(([id,k])=>{const e=$('#'+id);e.value=S.cfg[k];e.onchange=()=>{S.cfg[k]=Math.max(1,+e.value||1);save();if(!P.run){P.rem=pm(P.ph);pr()}}});
-$('#cs').checked=!!S.cfg.s;$('#cs').onchange=e=>{S.cfg.s=e.target.checked?1:0;save()};
+$('#ca').checked=!!S.cfg.a;$('#ca').onchange=e=>{S.cfg.a=e.target.checked?1:0;save()};$('#cs').checked=!!S.cfg.s;$('#cs').onchange=e=>{S.cfg.s=e.target.checked?1:0;save()};
 pr();try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 kv.get('bank').then(b=>{if(b&&b.length){setBank(b);go('dash')}else imp()}).catch(imp);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
