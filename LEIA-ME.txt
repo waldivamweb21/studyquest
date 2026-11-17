@@ -21,3 +21,8 @@ NO CELULAR ANDROID (Chrome)
 4. Pronto: depois disso funciona sem internet.
 
 Seu progresso fica no aparelho. Use Revisar > Copiar progresso para guardar um backup.
+
+VERSAO 2.3
+- Constancia nos estudos (quadrados por dia ate a prova) e data da prova com contagem de dias.
+- Cores por disciplina nas legendas, no edital e no radar.
+- Para atualizar: envie os arquivos para o mesmo repositorio, substituindo os antigos, e abra/feche o app duas vezes.

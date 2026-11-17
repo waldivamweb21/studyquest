@@ -31,6 +31,16 @@ select,textarea{width:100%;padding:9px;border-radius:10px;border:1px solid var(-
 .row{display:flex;gap:8px;justify-content:space-between;margin-top:10px}.bar{display:flex;justify-content:space-between}
 .don{display:flex;flex-direction:column;align-items:center}.don svg{width:140px;height:140px}.lg{width:100%;font-size:12px}.lg div{display:flex;gap:6px;padding:1px 0}.lg i{width:10px;height:10px;border-radius:50%;margin-top:4px;flex:none}.lg span{flex:1}
 table{width:100%;font-size:12px;border-collapse:collapse}td,th{padding:5px 3px;border-bottom:1px solid var(--line);text-align:left}
+input.fi{width:100%;padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin:4px 0 8px;font:inherit}
+.exf label{display:block;font-size:12px;color:var(--mut);margin-top:8px}details summary{cursor:pointer;margin-top:10px}
+.dg{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}.day{display:inline-block;width:20px;height:20px;border-radius:5px;flex:none}
+.d-g{background:#249b70}.d-r{background:#d9534f}.d-y{background:#e0a030}.d-f{background:rgba(147,160,189,.3)}
+.d-x{background:#8b5cf6;box-shadow:0 0 0 2px var(--card),0 0 0 4px #8b5cf6}
+.dl{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--mut);margin:4px 0 6px}.dl .day{width:11px;height:11px;border-radius:3px;margin-right:5px;box-shadow:none;vertical-align:middle}
+.exm{text-align:center}.ex-name{font-size:18px;font-weight:700;margin-top:6px}.ex-count{font-size:16px;font-weight:700;margin:10px 0}
+.ex-count.ok{color:#249b70}.ex-count.warn{color:#e0803a}.ex-count.today{color:#8b5cf6}.ex-count.past,.ex-count.none{color:var(--mut)}
+.exm details{text-align:left}
+.sw{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;flex:none;margin-top:0}
 button.tp{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;padding:10px;margin:5px 0;border-radius:10px;border:1px solid var(--line);border-left:6px solid var(--mut);background:var(--card)}
 .tp.g{border-left-color:#249b70;background:rgba(36,155,112,.14)}.tp.y{border-left-color:#e0a030;background:rgba(224,160,48,.16)}.tp.r{border-left-color:#d9534f;background:rgba(217,83,79,.12)}
 .tp .tn{flex:1}.tp b{font-size:12px}
@@ -51,10 +61,10 @@ const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"]/g,c=>({'
 let bank=[],byId=new Map();const LET=['A','B','C','D','E'];
 const setBank=b=>{bank=b;byId=new Map(b.map(q=>[q.i,q]))};
 const kv=window.__kv||{db:null,open(){return this.db||(this.db=new Promise((ok,no)=>{const r=indexedDB.open('sq',1);r.onupgradeneeded=()=>r.result.createObjectStore('k');r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}))},get(k){return this.open().then(d=>new Promise((ok,no)=>{const q=d.transaction('k').objectStore('k').get(k);q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)}))},set(k,v){return this.open().then(d=>new Promise((ok,no)=>{const x=d.transaction('k','readwrite');x.objectStore('k').put(v,k);x.oncomplete=()=>ok();x.onerror=()=>no(x.error)}))}};
-const KEY='sq-mobile-v1';let S={ans:[],marks:[],cfg:{f:25,b:5,l:15,e:4,s:1,a:1},day:{d:'',fd:0,cy:0,fs:0},run:null,theme:''};
+const KEY='sq-mobile-v1';let S={ans:[],marks:[],cfg:{f:25,b:5,l:15,e:4,s:1,a:1},day:{d:'',fd:0,cy:0,fs:0},run:null,theme:'',exam:{name:'ACE - Floresta',banca:'FACET',date:'2026-11-22'}};
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
-const dk=()=>new Date().toDateString();S.cfg=Object.assign({a:1},S.cfg);if(S.day.d!==dk())S.day={d:dk(),fd:0,cy:0,fs:0};
+const dk=()=>new Date().toDateString();S.cfg=Object.assign({a:1},S.cfg);S.exam=Object.assign({name:'ACE - Floresta',banca:'FACET',date:'2026-11-22'},S.exam);if(S.day.d!==dk())S.day={d:dk(),fd:0,cy:0,fs:0};
 const applyTheme=()=>{if(S.theme&&document.documentElement)document.documentElement.dataset.theme=S.theme};
 function theme(){const dk=S.theme?S.theme==='dark':window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches;S.theme=dk?'light':'dark';applyTheme();save()}
 applyTheme();
@@ -74,20 +84,51 @@ const fmt=ms=>{const m=Math.round(ms/60000);return m<60?m+' min':Math.floor(m/60
 const grp=(f,l=S.ans)=>{const m=new Map();l.forEach(a=>{const q=byId.get(a.q);if(!q)return;const k=f(q),o=m.get(k)||{n:0,ok:0,k};o.n++;if(a.ok)o.ok++;m.set(k,o)});return[...m.values()]};
 const tstat=()=>{const d=new Set(S.ans.map(a=>a.q)),m=new Map();bank.forEach(q=>{const k=q.d+'|'+q.t,o=m.get(k)||{k,d:q.d,t:q.t,kd:q.k,n:0,a:0};o.n++;if(d.has(q.i))o.a++;m.set(k,o)});return[...m.values()].map(o=>({...o,st:o.a===0?'r':o.a>=o.n?'g':'y'}))};
 let RM='d';
+const dayKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const parseDay=s=>{const [y,m,d]=String(s).split('-').map(Number);return new Date(y,m-1,d)};
+const discC=n=>PAL[Math.max(0,[...new Set(bank.map(q=>q.d))].indexOf(n))%PAL.length];
+const swc=c=>`<i class="sw" style="background:${c}"></i>`;
+// Dias do primeiro estudo até a prova: g=estudou, r=não estudou, y=hoje, f=dia futuro, x=dia da prova
+function consistency(ans,exam,now=new Date()){
+ const today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),per=new Map();
+ ans.forEach(a=>{const k=dayKey(new Date(a.t));per.set(k,(per.get(k)||0)+1)});
+ const keys=[...per.keys()].sort(),first=keys.length?parseDay(keys[0]):today,start=first<today?first:today;
+ const ex=exam&&exam.date?parseDay(exam.date):null,end=ex&&ex>=start?ex:today,days=[];
+ for(let d=new Date(start);d<=end;d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1)){
+  const k=dayKey(d),n=per.get(k)||0;let st;
+  if(ex&&k===dayKey(ex))st='x';else if(d>today)st='f';else if(k===dayKey(today))st='y';else st=n?'g':'r';
+  days.push({k,st,n,date:new Date(d)})}
+ const past=days.filter(d=>d.date<=today);let best=0,run=0,cur=0;
+ past.forEach(d=>{if(d.n){run++;best=Math.max(best,run)}else if(d.k!==dayKey(today))run=0});
+ let i=past.length-1;if(i>=0&&!past[i].n&&past[i].k===dayKey(today))i--;
+ for(;i>=0&&past[i].n;i--)cur++;
+ return{days,cur,best,studied:past.filter(d=>d.n).length,elapsed:past.length,remaining:ex?Math.round((ex-today)/86400000):null}}
+function consistCards(){
+ const ex=S.exam,c=consistency(S.ans,ex),rem=c.remaining,lb={g:'estudou',r:'não estudou',y:'hoje',f:'ainda não chegou',x:'dia da prova'};
+ const cls=rem===null?'none':rem<0?'past':rem===0?'today':rem<=3?'warn':'ok',
+ tx=rem===null?'Defina a data da prova':rem<0?`Prova realizada há ${-rem} dia(s)`:rem===0?'A prova é hoje!':rem===1?'Falta 1 dia':`${rem} dias restantes`;
+ return `<div class="card"><b>Constância nos estudos</b><p class="mut">Cada quadrado é um dia, do primeiro dia de estudo até a prova. Toque para ver a data.</p>
+ <div class="dg">${c.days.map(d=>{const t=d.date.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'2-digit'})+' — '+lb[d.st]+(d.n?' · '+d.n+' questão(ões)':'');return `<span class="day d-${d.st}" title="${E(t)}" onclick="toast(this.title)"></span>`}).join('')}</div>
+ <div class="dl"><span><i class="day d-g"></i>Estudou</span><span><i class="day d-r"></i>Não estudou</span><span><i class="day d-y"></i>Hoje</span><span><i class="day d-f"></i>Futuros</span><span><i class="day d-x"></i>Prova</span></div>
+ <p class="mut">Você está há ${c.cur} dia(s) sem falhar. Seu recorde é de ${c.best} dia(s). Dias estudados: ${c.studied} de ${c.elapsed}.</p></div>
+ <div class="card exm"><b>Data da prova</b><div class="ex-name">${E(ex.name||'Minha prova')}</div>${ex.date?`<div>${parseDay(ex.date).toLocaleDateString('pt-BR')}</div>`:''}${ex.banca?`<div class="mut">Banca: ${E(ex.banca)}</div>`:''}<div class="ex-count ${cls}">${E(tx)}</div>
+ <details><summary class="mut">Editar prova</summary><div class="exf"><label>Nome da prova<input class="fi" id="en" value="${E(ex.name||'')}" placeholder="Ex.: ACE - Floresta"></label><label>Banca<input class="fi" id="eb" value="${E(ex.banca||'')}" placeholder="Ex.: FACET"></label><label>Data da prova<input class="fi" id="ed" type="date" value="${E(ex.date||'')}"></label><button class="pri" style="width:100%" onclick="saveExam()">Salvar</button></div></details></div>`}
+function saveExam(){S.exam={name:$('#en').value.trim(),banca:$('#eb').value.trim(),date:$('#ed').value};save();dash();toast('Prova atualizada')}
 function radar(it){const N=it.length;if(N<3)return '<p class="mut">Responda questões de pelo menos 3 itens para ver o radar.</p>';
  const R=92,cx=150,cy=118,pt=(i,r)=>[cx+r*Math.sin(2*Math.PI*i/N),cy-r*Math.cos(2*Math.PI*i/N)].map(x=>x.toFixed(1)),poly=f=>it.map((x,i)=>pt(i,f(x)).join(',')).join(' ');
- return `<svg viewBox="0 0 300 236" style="width:100%;max-width:340px">${[25,50,75,100].map(v=>`<polygon points="${poly(()=>R*v/100)}" fill="none" stroke="#9aa5bd66"/>`).join('')}${it.map((x,i)=>{const p=pt(i,R);return `<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="#9aa5bd66"/>`}).join('')}<polygon points="${poly(x=>R*x.p/100)}" fill="#526de544" stroke="#526de5" stroke-width="2"/>${it.map((x,i)=>{const a=pt(i,R*x.p/100),c=pt(i,R+13);return `<circle cx="${a[0]}" cy="${a[1]}" r="3" fill="#526de5"/><text x="${c[0]}" y="${c[1]}" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="currentColor">${i+1}</text>`}).join('')}<text x="${cx+3}" y="${cy-R*.5+3}" font-size="8" fill="#93a0bd">50%</text><text x="${cx+3}" y="${cy-R+3}" font-size="8" fill="#93a0bd">100%</text></svg><div class="lg">${it.map((x,i)=>`<div><b>${i+1}</b><span>${E(x.l)}</span><b>${x.p}% · ${x.n}</b></div>`).join('')}</div>`}
+ return `<svg viewBox="0 0 300 236" style="width:100%;max-width:340px">${[25,50,75,100].map(v=>`<polygon points="${poly(()=>R*v/100)}" fill="none" stroke="#9aa5bd66"/>`).join('')}${it.map((x,i)=>{const p=pt(i,R);return `<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="#9aa5bd66"/>`}).join('')}<polygon points="${poly(x=>R*x.p/100)}" fill="#526de544" stroke="#526de5" stroke-width="2"/>${it.map((x,i)=>{const a=pt(i,R*x.p/100),c=pt(i,R+13);return `<circle cx="${a[0]}" cy="${a[1]}" r="3" fill="#526de5"/><text x="${c[0]}" y="${c[1]}" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="currentColor">${i+1}</text>`}).join('')}<text x="${cx+3}" y="${cy-R*.5+3}" font-size="8" fill="#93a0bd">50%</text><text x="${cx+3}" y="${cy-R+3}" font-size="8" fill="#93a0bd">100%</text></svg><div class="lg">${it.map((x,i)=>`<div><b>${i+1}</b>${x.c?swc(x.c):''}<span>${E(x.l)}</span><b>${x.p}% · ${x.n}</b></div>`).join('')}</div>`}
 function dash(){const A=S.ans,T=A.filter(a=>isT(a.t)),ok=A.filter(a=>a.ok).length,pr=l=>[{l:'Acertos',v:l.filter(a=>a.ok).length,c:'#249b70'},{l:'Erros',v:l.filter(a=>!a.ok).length,c:'#d9534f'}],
  ms=(l,m)=>l.filter(a=>a.m===m).reduce((s,a)=>s+(a.ms||0),0),sm=l=>l.reduce((s,a)=>s+(a.ms||0),0);
- const it=(RM==='d'?grp(q=>q.d):grp(q=>q.t).sort((a,b)=>b.n-a.n).slice(0,12)).map(x=>({l:x.k,n:x.n,p:Math.round(x.ok/x.n*100)}));
+ const it=(RM==='d'?grp(q=>q.d):grp(q=>q.t).sort((a,b)=>b.n-a.n).slice(0,12)).map(x=>({l:x.k,n:x.n,p:Math.round(x.ok/x.n*100),c:RM==='d'?discC(x.k):''}));
  const tp=grp(q=>q.d+'|'+q.t).sort((a,b)=>a.k<b.k?-1:1),TS=tstat(),ST=new Map(TS.map(o=>[o.k,o])),TG=TS.filter(o=>o.st==='g').length,TY=TS.filter(o=>o.st==='y').length,TP=TS.length?Math.round(TG/TS.length*100):0;
  V(`${S.run?`<div class="card"><b>Continuar de onde parou</b><p class="mut">${E(S.run.label)} · questão ${S.run.i+1} de ${S.run.ids.length}</p><button class="pri" style="width:100%" onclick="resume()">Continuar</button></div>`:''}
  <div class="grid"><div class="card"><b>${A.length}</b><small>respondidas</small></div><div class="card"><b>${A.length?Math.round(ok/A.length*100):0}%</b><small>acertos</small></div><div class="card"><b>${T.length}</b><small>hoje</small></div><div class="card"><b>${S.day.cy}</b><small>ciclos hoje</small></div><div class="card"><b>${fmt((S.day.fs||0)*1000)}</b><small>foco hoje</small></div><div class="card"><b>${fmt(sm(T))}</b><small>em questões hoje</small></div></div>
- <div class="card"><b>Avanço no edital</b><p class="mut">Verde: tópicos resolvidos (todas as questões respondidas). Vermelho: o que ainda falta.</p>${donut([{l:'Tópicos resolvidos',v:TG,c:'#249b70'},{l:'Faltam resolver',v:TS.length-TG,c:'#d9534f'}],TP+'%','DO EDITAL')}<p class="mut">${TY} em andamento · ${TS.filter(o=>o.st==='r').length} ainda não iniciados · questões respondidas: ${new Set(A.map(a=>a.q)).size} de ${bank.length}</p>${[...new Set(TS.map(o=>o.d))].map(d=>{const l=TS.filter(o=>o.d===d),g=l.filter(o=>o.st==='g').length,p=Math.round(g/l.length*100);return `<small>${E(d)} — ${g} de ${l.length} tópicos (${p}%)</small><div class="bar2"><span class="g" style="width:${p}%"></span><span class="r" style="width:${100-p}%"></span></div>`}).join('')}</div>
+ ${consistCards()}
+ <div class="card"><b>Avanço no edital</b><p class="mut">Verde: tópicos resolvidos (todas as questões respondidas). Vermelho: o que ainda falta.</p>${donut([{l:'Tópicos resolvidos',v:TG,c:'#249b70'},{l:'Faltam resolver',v:TS.length-TG,c:'#d9534f'}],TP+'%','DO EDITAL')}<p class="mut">${TY} em andamento · ${TS.filter(o=>o.st==='r').length} ainda não iniciados · questões respondidas: ${new Set(A.map(a=>a.q)).size} de ${bank.length}</p>${[...new Set(TS.map(o=>o.d))].map(d=>{const l=TS.filter(o=>o.d===d),g=l.filter(o=>o.st==='g').length,p=Math.round(g/l.length*100);return `<small>${swc(discC(d))}${E(d)} — ${g} de ${l.length} tópicos (${p}%)</small><div class="bar2"><span class="g" style="width:${p}%"></span><span class="r" style="width:${100-p}%"></span></div>`}).join('')}</div>
  <div class="card"><b>Tempo por atividade</b><table><tr><th></th><th>Questões</th><th>Tempo total</th><th>Hoje</th></tr>${[['study','Estudo'],['sim','Simulado'],['rev','Revisão']].map(([m,n])=>`<tr><td>${n}</td><td>${A.filter(a=>a.m===m).length}</td><td>${fmt(ms(A,m))}</td><td>${fmt(ms(T,m))}</td></tr>`).join('')}</table></div>
  <div class="card"><b>Acertos e erros</b>${donut(pr(A),A.length,'RESPOSTAS')}</div><div class="card"><b>Hoje</b>${donut(pr(T),T.length,'HOJE')}</div>
  <div class="card"><b>Radar de acertos</b><div class="seg"><button class="${RM==='d'?'on':''}" onclick="RM='d';dash()">Disciplinas</button><button class="${RM==='a'?'on':''}" onclick="RM='a';dash()">Assuntos (12 mais)</button></div><p class="mut">Quanto mais perto da borda, maior a taxa de acertos.</p><div class="don">${radar(it)}</div></div>
- <div class="card"><b>Acertos e erros por assunto</b>${tp.length?`<table><tr><th>Assunto</th><th>✔</th><th>✘</th><th>%</th></tr>${tp.map(x=>{const [d,t]=x.k.split('|');return `<tr><td><i class="dot ${(ST.get(x.k)||{}).st||'r'}"></i>${E(t)}<br><small>${E(d)}</small></td><td>${x.ok}</td><td>${x.n-x.ok}</td><td>${Math.round(x.ok/x.n*100)}%</td></tr>`}).join('')}</table>`:'<p class="mut">Responda questões para ver o desempenho por assunto.</p>'}</div><p class="mut" style="text-align:center">StudyQuest 2.2</p>`)}
+ <div class="card"><b>Acertos e erros por assunto</b>${tp.length?`<table><tr><th>Assunto</th><th>✔</th><th>✘</th><th>%</th></tr>${tp.map(x=>{const [d,t]=x.k.split('|');return `<tr><td><i class="dot ${(ST.get(x.k)||{}).st||'r'}"></i>${E(t)}<br><small>${swc(discC(d))}${E(d)}</small></td><td>${x.ok}</td><td>${x.n-x.ok}</td><td>${Math.round(x.ok/x.n*100)}%</td></tr>`}).join('')}</table>`:'<p class="mut">Responda questões para ver o desempenho por assunto.</p>'}</div><p class="mut" style="text-align:center">StudyQuest 2.3</p>`)}
 function cfgView(sc){const kinds=['Todas','Básicas','Específicas'],k=window['K'+sc]||'Todas',st=sc==='study';
  const list=st?tstat().filter(o=>k==='Todas'||o.kd===k).sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:a.t<b.t?-1:1):[];window._tl=list;
  const rows=st?`<div class="leg3"><span><i class="dot g"></i>Resolvido</span><span><i class="dot y"></i>Em andamento</span><span><i class="dot r"></i>Não resolvido</span></div><button class="tp" onclick="startTopic(-1)"><span class="tn">Todos os assuntos</span><b>${list.reduce((s,o)=>s+o.a,0)}/${list.reduce((s,o)=>s+o.n,0)}</b></button>`+list.map((o,i)=>`${i&&list[i-1].d===o.d?'':`<small class="dh">${E(o.d)}</small>`}<button class="tp ${o.st}" onclick="startTopic(${i})"><span class="tn">${E(o.t)}</span><b>${o.a}/${o.n}</b></button>`).join(''):'';
