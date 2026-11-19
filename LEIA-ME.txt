@@ -26,3 +26,12 @@ VERSAO 2.3
 - Constancia nos estudos (quadrados por dia ate a prova) e data da prova com contagem de dias.
 - Cores por disciplina nas legendas, no edital e no radar.
 - Para atualizar: envie os arquivos para o mesmo repositorio, substituindo os antigos, e abra/feche o app duas vezes.
+
+VERSAO 2.4
+- 1 toque numa alternativa seleciona; 2 toques seguidos riscam (ou desriscam). Depois, e so tocar em Responder.
+- O botao Marcar fica verde quando a questao esta marcada para revisao.
+- Em Revisar, a questao sai da lista quando voce a acerta na revisao (e a marca e retirada).
+- Cabecalho compacto no celular.
+
+VERSAO 2.5
+- Revisar separa as questoes em grupos: Errei, Acertei mas marquei e Marcadas sem responder (dentro de Basicas e Especificas).

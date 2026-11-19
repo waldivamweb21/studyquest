@@ -41,6 +41,15 @@ input.fi{width:100%;padding:9px;border-radius:10px;border:1px solid var(--line);
 .ex-count.ok{color:#249b70}.ex-count.warn{color:#e0803a}.ex-count.today{color:#8b5cf6}.ex-count.past,.ex-count.none{color:var(--mut)}
 .exm details{text-align:left}
 .sw{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;flex:none;margin-top:0}
+@media (max-width:480px){header .nm{display:none}header{gap:6px;flex-wrap:nowrap}.pomo{padding:3px 6px;gap:5px;flex:1;justify-content:space-between}#ps{order:3}}
+.seg.wrap{flex-wrap:wrap;gap:6px;border:0;overflow:visible}.seg.wrap button{flex:1 1 46%;padding:9px 6px;border:1px solid var(--line);border-radius:10px}.seg.wrap button+button{border-left:1px solid var(--line)}.seg.wrap .on{border-color:var(--blue)}
+.bd{display:inline-block;font-size:10px;font-weight:700;border-radius:10px;padding:2px 8px;margin:0 5px 4px 0}
+.bd.r{background:rgba(217,83,79,.18);color:#d9534f}.bd.ok{background:rgba(82,109,229,.18);color:#6f86f0}.bd.g{background:rgba(36,155,112,.2);color:#249b70}.bd.n{background:rgba(147,160,189,.22);color:var(--mut)}
+button.pri:disabled{opacity:.45}
+button.opt{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.opt.x span{text-decoration:line-through;opacity:.45}.opt.x b{opacity:.45}
+.hint{font-size:11px;color:var(--mut);margin:6px 0 0}
+.ghost.gr{background:#249b70;border-color:#249b70;color:#fff;font-weight:650}
 button.tp{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;padding:10px;margin:5px 0;border-radius:10px;border:1px solid var(--line);border-left:6px solid var(--mut);background:var(--card)}
 .tp.g{border-left-color:#249b70;background:rgba(36,155,112,.14)}.tp.y{border-left-color:#e0a030;background:rgba(224,160,48,.16)}.tp.r{border-left-color:#d9534f;background:rgba(217,83,79,.12)}
 .tp .tn{flex:1}.tp b{font-size:12px}
@@ -52,7 +61,7 @@ nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);b
 nav button{flex:1;border:0;background:none;padding:10px 0;font-size:11px;color:var(--mut)}nav .on{color:var(--blue);font-weight:700}
 #toast{position:fixed;left:12px;right:12px;bottom:calc(70px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px;border-radius:10px;display:none;z-index:9}
 </style></head><body>
-<header><h1>📚 StudyQuest</h1><div class="pomo" id="pomo"><span>🍅</span><b id="pt">25:00</b><small id="pp">Foco</small><button class="sm" id="pg" onclick="pToggle()">▶</button><button class="sm" onclick="pReset()">↺</button><button class="sm" onclick="togg('ps')">⚙</button></div><button class="sm" onclick="theme()" title="Modo escuro/claro">🌓</button>
+<header><h1>📚<span class="nm"> StudyQuest</span></h1><div class="pomo" id="pomo"><span>🍅</span><b id="pt">25:00</b><small id="pp">Foco</small><button class="sm" id="pg" onclick="pToggle()">▶</button><button class="sm" onclick="pReset()">↺</button><button class="sm" onclick="togg('ps')">⚙</button></div><button class="sm" onclick="theme()" title="Modo escuro/claro">🌓</button>
 <div id="ps"><label>Foco<input type="number" id="cf" min="1"></label><label>Intervalo<input type="number" id="cb" min="1"></label><label>Longo<input type="number" id="cl" min="1"></label><label>A cada<input type="number" id="ce" min="2"></label><label><input type="checkbox" id="cs"> Bip</label><label><input type="checkbox" id="ca"> Iniciar com as questões</label><button class="sm" onclick="beep(1);setTimeout(()=>beep(2),800)">Testar</button></div></header>
 <main id="v"></main><div id="toast"></div>
 <nav><button data-v="dash" onclick="go('dash')">▦<br>Painel</button><button data-v="study" onclick="go('study')">◎<br>Estudar</button><button data-v="sim" onclick="go('sim')">▤<br>Simulado</button><button data-v="rev" onclick="go('rev')">↻<br>Revisar</button></nav>
@@ -128,7 +137,7 @@ function dash(){const A=S.ans,T=A.filter(a=>isT(a.t)),ok=A.filter(a=>a.ok).lengt
  <div class="card"><b>Tempo por atividade</b><table><tr><th></th><th>Questões</th><th>Tempo total</th><th>Hoje</th></tr>${[['study','Estudo'],['sim','Simulado'],['rev','Revisão']].map(([m,n])=>`<tr><td>${n}</td><td>${A.filter(a=>a.m===m).length}</td><td>${fmt(ms(A,m))}</td><td>${fmt(ms(T,m))}</td></tr>`).join('')}</table></div>
  <div class="card"><b>Acertos e erros</b>${donut(pr(A),A.length,'RESPOSTAS')}</div><div class="card"><b>Hoje</b>${donut(pr(T),T.length,'HOJE')}</div>
  <div class="card"><b>Radar de acertos</b><div class="seg"><button class="${RM==='d'?'on':''}" onclick="RM='d';dash()">Disciplinas</button><button class="${RM==='a'?'on':''}" onclick="RM='a';dash()">Assuntos (12 mais)</button></div><p class="mut">Quanto mais perto da borda, maior a taxa de acertos.</p><div class="don">${radar(it)}</div></div>
- <div class="card"><b>Acertos e erros por assunto</b>${tp.length?`<table><tr><th>Assunto</th><th>✔</th><th>✘</th><th>%</th></tr>${tp.map(x=>{const [d,t]=x.k.split('|');return `<tr><td><i class="dot ${(ST.get(x.k)||{}).st||'r'}"></i>${E(t)}<br><small>${swc(discC(d))}${E(d)}</small></td><td>${x.ok}</td><td>${x.n-x.ok}</td><td>${Math.round(x.ok/x.n*100)}%</td></tr>`}).join('')}</table>`:'<p class="mut">Responda questões para ver o desempenho por assunto.</p>'}</div><p class="mut" style="text-align:center">StudyQuest 2.3</p>`)}
+ <div class="card"><b>Acertos e erros por assunto</b>${tp.length?`<table><tr><th>Assunto</th><th>✔</th><th>✘</th><th>%</th></tr>${tp.map(x=>{const [d,t]=x.k.split('|');return `<tr><td><i class="dot ${(ST.get(x.k)||{}).st||'r'}"></i>${E(t)}<br><small>${swc(discC(d))}${E(d)}</small></td><td>${x.ok}</td><td>${x.n-x.ok}</td><td>${Math.round(x.ok/x.n*100)}%</td></tr>`}).join('')}</table>`:'<p class="mut">Responda questões para ver o desempenho por assunto.</p>'}</div><p class="mut" style="text-align:center">StudyQuest 2.5</p>`)}
 function cfgView(sc){const kinds=['Todas','Básicas','Específicas'],k=window['K'+sc]||'Todas',st=sc==='study';
  const list=st?tstat().filter(o=>k==='Todas'||o.kd===k).sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:a.t<b.t?-1:1):[];window._tl=list;
  const rows=st?`<div class="leg3"><span><i class="dot g"></i>Resolvido</span><span><i class="dot y"></i>Em andamento</span><span><i class="dot r"></i>Não resolvido</span></div><button class="tp" onclick="startTopic(-1)"><span class="tn">Todos os assuntos</span><b>${list.reduce((s,o)=>s+o.a,0)}/${list.reduce((s,o)=>s+o.n,0)}</b></button>`+list.map((o,i)=>`${i&&list[i-1].d===o.d?'':`<small class="dh">${E(o.d)}</small>`}<button class="tp ${o.st}" onclick="startTopic(${i})"><span class="tn">${E(o.t)}</span><b>${o.a}/${o.n}</b></button>`).join(''):'';
@@ -139,32 +148,53 @@ function cfgView(sc){const kinds=['Todas','Básicas','Específicas'],k=window['K
 function startTopic(i){const k=window.Kstudy||'Todas',o=i<0?null:window._tl[i];begin(pool(k,o?o.t:'',F.study),'study','Estudo')}
 function startFrom(sc){const k=window['K'+sc]||'Todas';let l=pool(k,'',F[sc]).filter(q=>q.a).sort(()=>Math.random()-.5).slice(0,+$('#nq').value);begin(l,'sim','Simulado')}
 let run=null,RK='Básicas';const cur=()=>run.l[run.i];
-const rsave=()=>{S.run={ids:run.l.map(q=>q.i),i:run.i,mode:run.mode,label:run.label,sel:run.sel,done:run.done,ms:run.ms,t0:run.t0};save()};
+const rsave=()=>{S.run={ids:run.l.map(q=>q.i),i:run.i,mode:run.mode,label:run.label,sel:run.sel,done:run.done,ms:run.ms,strike:run.strike,t0:run.t0};save()};
 const auto=()=>{if(S.cfg.a&&!P.run&&P.ph==='f')pToggle()};
-function begin(l,mode,label){if(!l.length)return toast('Nenhuma questão nesta seleção');run={l,i:0,mode,label,sel:{},done:{},ms:{},t0:Date.now(),q0:Date.now()};auto();rsave();rq()}
+function begin(l,mode,label){if(!l.length)return toast('Nenhuma questão nesta seleção');run={l,i:0,mode,label,sel:{},done:{},ms:{},strike:{},t0:Date.now(),q0:Date.now()};auto();rsave();rq()}
 function resume(){const r=S.run,l=(r.ids||[]).map(i=>byId.get(i)).filter(Boolean);if(!l.length){S.run=null;save();return go('dash')}
- run={l,i:Math.min(r.i,l.length-1),mode:r.mode,label:r.label,sel:r.sel||{},done:r.done||{},ms:r.ms||{},t0:r.t0||Date.now(),q0:Date.now()};auto();rq()}
+ run={l,i:Math.min(r.i,l.length-1),mode:r.mode,label:r.label,sel:r.sel||{},done:r.done||{},ms:r.ms||{},strike:r.strike||{},t0:r.t0||Date.now(),q0:Date.now()};auto();rq()}
 const acc=()=>{const q=cur();run.ms[q.i]=(run.ms[q.i]||0)+Date.now()-run.q0;run.q0=Date.now()};
 const fbH=q=>{const ok=run.sel[q.i]===q.a;return `<p><b>${ok?'✔ Correto!':'✘ Errado. Gabarito: '+E(q.a)}</b></p><div class="ex">${E(q.e)}</div>`};
-function rq(){const q=cur(),dn=run.done[q.i],s=run.sel[q.i],sim=run.mode==='sim';run.q0=Date.now();
+function rq(){const q=cur(),dn=run.done[q.i],s=run.sel[q.i],sim=run.mode==='sim',sk=run.strike[q.i]||{};run.q0=Date.now();lastTap={l:'',q:'',t:0,p:null};
  V(`<div class="bar"><b>${E(run.label)}</b><span>${run.i+1}/${run.l.length}</span></div><div class="card"><small>${E(q.d)} · ${E(q.t)} · ${E(q.n||'')}</small><p class="st">${E(q.s)}</p>
- ${LET.filter(l=>q.o[l]).map(l=>`<button class="opt ${dn?(l===q.a?'ok':l===s?'bad':''):(l===s?'sel':'')}" id="o${l}" onclick="choose('${l}')"><b>${l}</b><span>${E(q.o[l])}</span></button>`).join('')}<div id="fb">${dn?fbH(q):''}</div>
- <div class="row"><button class="ghost" onclick="mark(this)">${S.marks.includes(q.i)?'★ Marcada':'☆ Marcar'}</button>${sim||dn?'':'<button class="pri" onclick="submit()">Responder</button>'}</div></div>
+ ${LET.filter(l=>q.o[l]).map(l=>`<button class="opt ${dn?(l===q.a?'ok':l===s?'bad':''):(l===s?'sel':'')} ${sk[l]?'x':''}" id="o${l}" onclick="tapOpt('${l}')"><b>${l}</b><span>${E(q.o[l])}</span></button>`).join('')}${dn?'':'<p class="hint">1 toque seleciona · 2 toques riscam a alternativa</p>'}<div id="fb">${dn?fbH(q):''}</div>
+ <div class="row"><button class="ghost ${S.marks.includes(q.i)?'gr':''}" onclick="mark(this)">${S.marks.includes(q.i)?'★ Marcada':'☆ Marcar'}</button>${sim||dn?'':'<button class="pri" onclick="submit()">Responder</button>'}</div></div>
  <div class="row"><button class="ghost" onclick="mv(-1)" ${run.i?'':'disabled'}>← Anterior</button><button class="ghost" onclick="mv(1)" ${run.i+1>=run.l.length?'disabled':''}>Próxima →</button></div>
  <button class="pri" style="width:100%;margin-top:8px" onclick="finish()">${sim?'Finalizar simulado':'Encerrar e ver resultado'}</button>`)}
+let lastTap={l:'',q:'',t:0,p:null};
+const paintOpts=()=>{const q=cur(),sk=run.strike[q.i]||{};document.querySelectorAll('.opt').forEach(b=>{const l=b.id.slice(1);b.classList.toggle('sel',run.sel[q.i]===l);b.classList.toggle('x',!!sk[l])})};
+// 1 toque seleciona (depois é só tocar em Responder); 2 toques seguidos riscam (ou desriscam) a alternativa
+function tapOpt(l){const q=cur();if(run.done[q.i])return;const now=Date.now(),sk=run.strike[q.i]||(run.strike[q.i]={}),dbl=lastTap.l===l&&lastTap.q===q.i&&now-lastTap.t<350;
+ if(dbl){const p=lastTap.p;if(p.sel===undefined)delete run.sel[q.i];else run.sel[q.i]=p.sel;
+  if(p.struck)delete sk[l];else{sk[l]=1;if(run.sel[q.i]===l)delete run.sel[q.i]}
+  lastTap={l:'',q:'',t:0,p:null}}
+ else{lastTap={l,q:q.i,t:now,p:{sel:run.sel[q.i],struck:!!sk[l]}};delete sk[l];run.sel[q.i]=l}
+ paintOpts();rsave()}
 function choose(l){const q=cur();if(run.done[q.i])return;run.sel[q.i]=l;document.querySelectorAll('.opt').forEach(b=>b.classList.toggle('sel',b.id==='o'+l));rsave()}
-function mark(b){const q=cur(),i=S.marks.indexOf(q.i);i<0?S.marks.push(q.i):S.marks.splice(i,1);save();b.textContent=i<0?'★ Marcada':'☆ Marcar'}
-function rec(q){S.ans.push({q:q.i,a:run.sel[q.i],ok:run.sel[q.i]===q.a,t:new Date().toISOString(),ms:run.ms[q.i]||0,m:run.mode});run.done[q.i]=true;save()}
+function mark(b){const q=cur(),i=S.marks.indexOf(q.i);i<0?S.marks.push(q.i):S.marks.splice(i,1);save();b.textContent=i<0?'★ Marcada':'☆ Marcar';b.classList.toggle('gr',i<0)}
+function rec(q){const ok=run.sel[q.i]===q.a;S.ans.push({q:q.i,a:run.sel[q.i],ok,t:new Date().toISOString(),ms:run.ms[q.i]||0,m:run.mode});run.done[q.i]=true;
+ if(run.mode==='rev'&&ok){const i=S.marks.indexOf(q.i);if(i>=0)S.marks.splice(i,1)}   // revisou e acertou: sai da lista de revisão
+ save()}
 function submit(){const q=cur();if(!run.sel[q.i])return toast('Escolha uma alternativa');acc();rec(q);rsave();rq()}
 function mv(d){acc();run.i=Math.max(0,Math.min(run.l.length-1,run.i+d));rsave();rq()}
 function finish(){acc();if(run.mode==='sim')run.l.forEach(q=>{if(run.sel[q.i]&&!run.done[q.i])rec(q)});
  const an=run.l.filter(q=>run.done[q.i]),ok=an.filter(q=>run.sel[q.i]===q.a).length,w=an.filter(q=>run.sel[q.i]!==q.a),tot=Object.values(run.ms).reduce((a,b)=>a+b,0);
  V(`<div class="card"><b>${E(run.label)} concluído</b><p>${ok} acertos · ${w.length} erros · ${run.l.length-an.length} em branco</p><p class="mut">Tempo nas questões: ${fmt(tot)} (${an.length?Math.round(tot/an.length/1000):0} s por questão)</p></div>
  ${w.map(q=>`<div class="card"><small>${E(q.t)}</small><p class="st">${E(q.s.slice(0,220))}${q.s.length>220?'…':''}</p><p>Você: <b>${E(run.sel[q.i])}</b> · Gabarito: <b>${E(q.a)}</b></p></div>`).join('')}`);S.run=null;save();run=null}
-const revL=k=>{const bad=new Set(S.ans.filter(a=>!a.ok).map(a=>a.q));return bank.filter(q=>q.k===k&&(bad.has(q.i)||S.marks.includes(q.i)))};
-function rev(){const l=revL(RK),bad=new Set(S.ans.filter(a=>!a.ok).map(a=>a.q));
- V(`<div class="card"><b>Revisar erros e marcadas</b><div class="seg">${['Básicas','Específicas'].map(k=>`<button class="${RK===k?'on':''}" onclick="RK='${k}';rev()">${k} (${revL(k).length})</button>`).join('')}</div><button class="pri" style="width:100%" onclick="begin(revL(RK),'rev','Revisão · '+RK)">Estudar estas ${l.length} questões</button></div>
- ${l.slice(0,40).map(q=>`<div class="card"><small>${bad.has(q.i)?'✘ errada ':''}${S.marks.includes(q.i)?'★ marcada ':''}· ${E(q.t)}</small><p class="st">${E(q.s.slice(0,160))}${q.s.length>160?'…':''}</p></div>`).join('')}
+// Pendente de revisão = a ÚLTIMA resposta foi errada (ou a questão está marcada). Acertou na revisão: sai da lista.
+const lastWrong=()=>{const m=new Map();[...S.ans].sort((a,b)=>a.t<b.t?-1:a.t>b.t?1:0).forEach(a=>m.set(a.q,!a.ok));return new Set([...m].filter(([,w])=>w).map(([q])=>q))};
+let RG='todas';
+// Grupos da revisão (dentro de cada categoria): err = última resposta errada · acm = marcada e acertou · sem = marcada e ainda sem resposta
+const revG=(k,g='todas')=>{const lw=lastWrong(),done=new Set(S.ans.map(a=>a.q));return bank.filter(q=>{if(q.k!==k)return false;const err=lw.has(q.i),m=S.marks.includes(q.i);return g==='err'?err:g==='acm'?m&&!err&&done.has(q.i):g==='sem'?m&&!done.has(q.i):(err||m)})};
+const revL=k=>revG(k,'todas');
+function rev(){if(RG==='sem'&&!revG(RK,'sem').length)RG='todas';
+ const l=revG(RK,RG),lw=lastWrong(),done=new Set(S.ans.map(a=>a.q)),n=g=>revG(RK,g).length,
+ chips=[['todas','Todas'],['err','✘ Errei'],['acm','★ Acertei, mas marquei'],['sem','★ Marcadas sem responder']].filter(([g])=>g!=='sem'||n('sem')>0),
+ badge=q=>(lw.has(q.i)?'<span class="bd r">✘ errei</span>':done.has(q.i)?'<span class="bd ok">✔ acertei</span>':'<span class="bd n">sem resposta</span>')+(S.marks.includes(q.i)?'<span class="bd g">★ marcada</span>':'');
+ V(`<div class="card"><b>Revisar erros e marcadas</b><div class="seg">${['Básicas','Específicas'].map(k=>`<button class="${RK===k?'on':''}" onclick="RK='${k}';rev()">${k} (${revL(k).length})</button>`).join('')}</div>
+ <div class="seg wrap">${chips.map(([g,lb])=>`<button class="${RG===g?'on':''}" onclick="RG='${g}';rev()">${lb} (${n(g)})</button>`).join('')}</div>
+ <button class="pri" style="width:100%" ${l.length?'':'disabled'} onclick="begin(revG(RK,RG),'rev','Revisão · '+RK)">Estudar estas ${l.length} questões</button></div>
+ ${l.slice(0,40).map(q=>`<div class="card"><div>${badge(q)}</div><small>${E(q.t)}</small><p class="st">${E(q.s.slice(0,160))}${q.s.length>160?'…':''}</p></div>`).join('')||'<div class="card"><p class="mut">Nada pendente neste grupo. Continue praticando!</p></div>'}
  <div class="card"><b>Backup do progresso</b><p class="mut">Os dados ficam só neste navegador (${S.ans.length} respostas, ${Math.round(JSON.stringify(S).length/1024)} KB). Use <b>Salvar arquivo</b>: ele guarda tudo, sem limite de tamanho. Não use apps de notas, que cortam o texto perto de 20.000 caracteres.</p><div class="row"><button class="pri" onclick="bkFile()">Salvar arquivo</button><label class="ghost" style="cursor:pointer">Restaurar de arquivo<input type="file" accept=".json,application/json,text/plain" hidden onchange="bkLoad(this.files[0])"></label></div><details><summary class="mut">Copiar como texto (backups pequenos)</summary><textarea id="bk" rows="4"></textarea><div class="row"><button class="ghost" onclick="bkOut()">Copiar texto</button><button class="ghost" onclick="bkIn()">Restaurar do texto</button></div></details></div>
  <div class="card"><b>Banco de questões</b><p class="mut">${bank.length} questões neste aparelho.</p><button class="ghost" onclick="imp()">Importar outro banco</button></div>`)}
 function bkOut(){const t=JSON.stringify(S);$('#bk').value=t;$('#bk').select();try{navigator.clipboard.writeText(t).then(()=>toast('Copiado'),()=>toast('Selecione e copie o texto'))}catch(e){toast('Selecione e copie o texto')}}
