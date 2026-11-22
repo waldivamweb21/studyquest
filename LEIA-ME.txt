@@ -35,3 +35,8 @@ VERSAO 2.4
 
 VERSAO 2.5
 - Revisar separa as questoes em grupos: Errei, Acertei mas marquei e Marcadas sem responder (dentro de Basicas e Especificas).
+
+VERSAO 2.6
+- Painel em abas: Resumo, Desempenho e Tempo.
+- Tabela de acertos por assunto sem bolinhas: linha vermelha abaixo de 50% e amarela abaixo de 70%.
+- Linha do tempo de estudos (dia a dia), horas por dia (grafico), horas por assunto ou disciplina e pontos fracos.
