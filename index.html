@@ -9,7 +9,7 @@
 :root[data-theme="dark"]{--bg:#0f1524;--card:#192036;--ink:#e8ecf8;--mut:#93a0bd;--line:#2a3350}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 12px 84px}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 12px 20px}
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:10px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 header h1{font-size:17px;margin:0;flex:1}
 .pomo{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 8px}
@@ -41,6 +41,45 @@ input.fi{width:100%;padding:9px;border-radius:10px;border:1px solid var(--line);
 .ex-count.ok{color:#249b70}.ex-count.warn{color:#e0803a}.ex-count.today{color:#8b5cf6}.ex-count.past,.ex-count.none{color:var(--mut)}
 .exm details{text-align:left}
 .sw{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;flex:none;margin-top:0}
+/* 2.7: flashcards no celular */
+.ch{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:18px;padding:7px 12px;font-size:13px;cursor:pointer}
+.ch.on{background:#526de5;border-color:#526de5;color:#fff;font-weight:650}
+.chs{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.fcm{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;gap:10px}
+.fcr{display:flex;flex-direction:column;gap:4px}.fcr>b{font-size:13px;color:var(--mut)}
+.fcgo{width:100%;margin-bottom:10px}
+.fcal{border-color:#526de5}
+textarea.fi{width:100%;padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin:4px 0 10px;font:inherit;resize:vertical}
+.fl{display:block;font-size:12px;color:var(--mut);margin-top:6px}
+.fcf{font-size:19px;line-height:1.6;white-space:pre-wrap;margin:12px 0}
+.fcb{font-size:16px;line-height:1.6;white-space:pre-wrap;border-top:2px dashed var(--line);padding-top:14px;margin-top:6px}
+.fcg{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.fcg button{padding:11px;border-radius:12px;font-weight:650;border:2px solid;background:transparent;text-align:left;display:flex;flex-direction:column;gap:2px;font:inherit;cursor:pointer}
+.fcg small{font-weight:400;font-size:12px;opacity:.85}
+.gr1{border-color:#d9534f!important;color:var(--ar)}.gr2{border-color:#e0a030!important;color:var(--ay)}.gr3{border-color:#249b70!important;color:#249b70}
+.hist p{margin:4px 0;font-size:13px}
+/* 2.9: resposta e comentário no final do simulado */
+.fb-head{margin-bottom:10px;font-size:14px}.fb-head span{opacity:.9}
+.fb-gab{padding:10px 12px;border-radius:10px;background:rgba(36,155,112,.16);margin-bottom:10px}
+.fb-gab small{display:block;font-size:11px;font-weight:700;letter-spacing:.5px;opacity:.8;text-transform:uppercase}
+.fb-gab div{font-size:15px;font-weight:600;margin-top:2px}
+.fb-sec{margin-top:12px}.fb-sec>b{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;opacity:.8;margin-bottom:5px}
+.fb-sec p{margin:0;line-height:1.6;font-size:14px}
+.fb-alts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.fb-alts li{padding:8px 10px;border-radius:9px;border:1px solid var(--line);font-size:13px;line-height:1.5}
+.fb-alts li.alt-ok{border-color:#249b70;background:rgba(36,155,112,.14)}.fb-alts li.alt-mine{border-width:2px}
+.fb-res{margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--line)}
+/* 2.8: menu hambúrguer */
+#burger{font-size:20px;line-height:1;padding:6px 10px}
+.drawer[hidden]{display:none}
+.drawer{position:fixed;inset:0;z-index:60}
+.scrim{position:absolute;inset:0;background:rgba(10,15,30,.5)}
+.dmenu{position:absolute;top:0;left:0;bottom:0;width:min(80vw,290px);background:var(--card);border-right:1px solid var(--line);padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:4px;box-shadow:0 0 30px rgba(0,0,0,.35);animation:dmIn .2s ease-out;overflow-y:auto}
+@keyframes dmIn{from{transform:translateX(-100%)}to{transform:none}}
+.dm-head{display:flex;justify-content:space-between;align-items:center;padding:2px 2px 12px;border-bottom:1px solid var(--line);margin-bottom:8px;font-size:17px}
+.dmenu button{text-align:left;border:0;background:transparent;color:var(--ink);padding:14px 12px;border-radius:10px;font:inherit;font-size:16px;font-weight:600;cursor:pointer}
+.dmenu button:hover,.dmenu button:focus-visible{background:rgba(82,109,229,.12)}
+.dmenu button.on{background:rgba(82,109,229,.2);color:var(--blue)}
 /* 2.6: cores por aproveitamento, abas, linha do tempo, horas e pontos fracos */
 :root{--ar:#c9302c;--ay:#9a6200}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ar:#ff7b7b;--ay:#f2c14e}}
@@ -73,14 +112,24 @@ button.tp{display:flex;align-items:center;justify-content:space-between;gap:8px;
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}.dot.g{background:#249b70}.dot.y{background:#e0a030}.dot.r{background:#d9534f}
 .leg3{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;margin:8px 0}
 .bar2{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:3px 0 8px}.bar2 .g{background:#249b70}.bar2 .r{background:#d9534f}
-nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
-nav button{flex:1;border:0;background:none;padding:10px 0;font-size:11px;color:var(--mut)}nav .on{color:var(--blue);font-weight:700}
-#toast{position:fixed;left:12px;right:12px;bottom:calc(70px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px;border-radius:10px;display:none;z-index:9}
+
+
+#toast{position:fixed;left:12px;right:12px;bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px;border-radius:10px;display:none;z-index:9}
 </style></head><body>
-<header><h1>📚<span class="nm"> StudyQuest</span></h1><div class="pomo" id="pomo"><span>🍅</span><b id="pt">25:00</b><small id="pp">Foco</small><button class="sm" id="pg" onclick="pToggle()">▶</button><button class="sm" onclick="pReset()">↺</button><button class="sm" onclick="togg('ps')">⚙</button></div><button class="sm" onclick="theme()" title="Modo escuro/claro">🌓</button>
+<header><button id="burger" class="sm" aria-label="Abrir menu" aria-expanded="false" onclick="openMenu()">☰</button><h1>📚<span class="nm"> StudyQuest</span></h1><div class="pomo" id="pomo"><span>🍅</span><b id="pt">25:00</b><small id="pp">Foco</small><button class="sm" id="pg" onclick="pToggle()">▶</button><button class="sm" onclick="pReset()">↺</button><button class="sm" onclick="togg('ps')">⚙</button></div>
 <div id="ps"><label>Foco<input type="number" id="cf" min="1"></label><label>Intervalo<input type="number" id="cb" min="1"></label><label>Longo<input type="number" id="cl" min="1"></label><label>A cada<input type="number" id="ce" min="2"></label><label><input type="checkbox" id="cs"> Bip</label><label><input type="checkbox" id="ca"> Iniciar com as questões</label><button class="sm" onclick="beep(1);setTimeout(()=>beep(2),800)">Testar</button></div></header>
 <main id="v"></main><div id="toast"></div>
-<nav><button data-v="dash" onclick="go('dash')">▦<br>Painel</button><button data-v="study" onclick="go('study')">◎<br>Estudar</button><button data-v="sim" onclick="go('sim')">▤<br>Simulado</button><button data-v="rev" onclick="go('rev')">↻<br>Revisar</button></nav>
+<div id="drawer" class="drawer" hidden>
+<div class="scrim" onclick="closeMenu()"></div>
+<nav class="dmenu" aria-label="Menu principal">
+<div class="dm-head"><b>📚 StudyQuest</b><button class="sm" onclick="closeMenu()" aria-label="Fechar menu">✕</button></div>
+<button data-v="dash" onclick="go('dash')">▦ Painel</button>
+<button data-v="study" onclick="go('study')">◎ Estudar</button>
+<button data-v="sim" onclick="go('sim')">▤ Simulado</button>
+<button data-v="rev" onclick="go('rev')">↻ Revisar</button>
+<button onclick="closeMenu();fcView()">🃏 Flashcards</button>
+<button onclick="theme();closeMenu()">🌓 Modo escuro / claro</button>
+</nav></div>
 <script>
 const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let bank=[],byId=new Map();const LET=['A','B','C','D','E'];
@@ -104,7 +153,10 @@ const PAL=['#526de5','#249b70','#e0803a','#a35bd6','#d9534f','#2aa6c9'];
 function donut(sg,c,sub){const t=sg.reduce((a,x)=>a+x.v,0),C=2*Math.PI*52;let o=0;
  const r=t?sg.filter(x=>x.v>0).map(x=>{const l=x.v/t*C,e=`<circle cx="70" cy="70" r="52" fill="none" stroke="${x.c}" stroke-width="22" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 70 70)"/>`;o+=l;return e}).join(''):'<circle cx="70" cy="70" r="52" fill="none" stroke="#9aa5bd44" stroke-width="22"/>';
  return `<div class="don"><svg viewBox="0 0 140 140"><text x="70" y="72" text-anchor="middle" font-size="22" font-weight="800" fill="currentColor">${c}</text><text x="70" y="88" text-anchor="middle" font-size="9" fill="#93a0bd">${sub}</text>${r}</svg><div class="lg">${sg.map(x=>`<div><i style="background:${x.c}"></i><span>${E(x.l)}</span><b>${x.v}${t?' · '+Math.round(x.v/t*100)+'%':''}</b></div>`).join('')}</div></div>`}
-function go(v){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));({dash,study:()=>cfgView('study'),sim:()=>cfgView('sim'),rev})[v]()}
+function openMenu(){$('#drawer').hidden=false;$('#burger').setAttribute('aria-expanded','true')}
+function closeMenu(){const d=$('#drawer');if(d)d.hidden=true;const b=$('#burger');if(b)b.setAttribute('aria-expanded','false')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+function go(v){closeMenu();document.querySelectorAll('.dmenu button[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));({dash,study:()=>cfgView('study'),sim:()=>cfgView('sim'),rev})[v]()}
 const fmt=ms=>{const m=Math.round(ms/60000);return m<60?m+' min':Math.floor(m/60)+' h '+String(m%60).padStart(2,'0')+' min'};
 const grp=(f,l=S.ans)=>{const m=new Map();l.forEach(a=>{const q=byId.get(a.q);if(!q)return;const k=f(q),o=m.get(k)||{n:0,ok:0,k};o.n++;if(a.ok)o.ok++;m.set(k,o)});return[...m.values()]};
 const tstat=()=>{const d=new Set(S.ans.map(a=>a.q)),m=new Map();bank.forEach(q=>{const k=q.d+'|'+q.t,o=m.get(k)||{k,d:q.d,t:q.t,kd:q.k,n:0,a:0};o.n++;if(d.has(q.i))o.a++;m.set(k,o)});return[...m.values()].map(o=>({...o,st:o.a===0?'r':o.a>=o.n?'g':'y'}))};
@@ -139,6 +191,171 @@ function consistCards(){
  <div class="card exm"><b>Data da prova</b><div class="ex-name">${E(ex.name||'Minha prova')}</div>${ex.date?`<div>${parseDay(ex.date).toLocaleDateString('pt-BR')}</div>`:''}${ex.banca?`<div class="mut">Banca: ${E(ex.banca)}</div>`:''}<div class="ex-count ${cls}">${E(tx)}</div>
  <details><summary class="mut">Editar prova</summary><div class="exf"><label>Nome da prova<input class="fi" id="en" value="${E(ex.name||'')}" placeholder="Ex.: ACE - Floresta"></label><label>Banca<input class="fi" id="eb" value="${E(ex.banca||'')}" placeholder="Ex.: FACET"></label><label>Data da prova<input class="fi" id="ed" type="date" value="${E(ex.date||'')}"></label><button class="pri" style="width:100%" onclick="saveExam()">Salvar</button></div></details></div>`}
 function saveExam(){S.exam={name:$('#en').value.trim(),banca:$('#eb').value.trim(),date:$('#ed').value};save();dash();toast('Prova atualizada')}
+// ===== Núcleo de flashcards (mesmo código no desktop e no celular) =====
+// Depende apenas de dayKey(d) e parseDay('AAAA-MM-DD'), que já existem nos dois apps.
+const FC_SEQ=[1,7,15,30];
+const FC_MOTIVOS={atencao:{t:'Falta de atenção',i:'👁️',dica:'Treine a leitura cuidadosa do comando e das alternativas.'},esqueci:{t:'Esqueci',i:'🧠',dica:'Reforce com flashcards e revisões espaçadas.'},nao_sabia:{t:'Não sabia',i:'❓',dica:'Volte à teoria, aos exemplos ou à videoaula antes de tentar de novo.'}};
+const FC_CONF={certeza:{t:'Certeza',i:'✔'},duvida:{t:'Dúvida',i:'◐'},chute:{t:'Chute',i:'🎲'}};
+const FC_RES={errei:{t:'Errei',i:'✘'},dificil:{t:'Lembrei com dificuldade',i:'◐'},facil:{t:'Acertei com facilidade',i:'✔'}};
+const FC_ORIGEM={errada:'✘ Errada',certa:'✔ Certa marcada',marcada:'★ Marcada'};
+const fcToday=(now=new Date())=>new Date(now.getFullYear(),now.getMonth(),now.getDate());
+const fcAdd=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const fcDaysTo=(a,b)=>Math.round((b-a)/86400000);
+// Dias até a próxima revisão. Com data de prova, a sequência é comprimida (fator = dias restantes / 53)
+// e a última revisão cai, no máximo, na véspera da prova.
+function fcInterval(base,today,examISO){
+  const left=examISO?fcDaysTo(today,parseDay(examISO)):null;
+  if(left===null||left<=0)return base;
+  const n=Math.max(1,Math.round(base*Math.min(1,left/53)));
+  return Math.max(0,Math.min(n,left-1));
+}
+// Resultado de uma revisão: errei = volta ao 1º intervalo · difícil = 3 dias · fácil = próximo da sequência (1, 7, 15, 30)
+function fcSchedule(card,result,today,examISO){
+  let step=card.step||0,days;
+  if(result==='errei'){step=0;days=fcInterval(FC_SEQ[0],today,examISO);}
+  else if(result==='dificil'){days=fcInterval(3,today,examISO);}
+  else{step+=1;if(step>=FC_SEQ.length)return{step,state:'dominado',due:null,days:null};days=fcInterval(FC_SEQ[step],today,examISO);}
+  return{step,state:'ativo',due:dayKey(fcAdd(today,days)),days};
+}
+function fcActivate(card,now,examISO){
+  const t=fcToday(now);
+  return{...card,state:'ativo',step:0,due:dayKey(fcAdd(t,fcInterval(FC_SEQ[0],t,examISO))),updated:now.toISOString()};
+}
+function fcReopen(card,now){return{...card,state:'ativo',step:0,due:dayKey(fcToday(now)),updated:now.toISOString()};}
+function fcApplyReview(card,result,now,examISO){
+  const s=fcSchedule(card,result,fcToday(now),examISO);
+  const nc={...card,step:s.step,state:s.state,due:s.due,lastDays:s.days,reviews:(card.reviews||0)+1,lapses:(card.lapses||0)+(result==='errei'?1:0),last:now.toISOString(),updated:now.toISOString()};
+  return{card:nc,log:{fc:card.id,at:now.toISOString(),result,prev:card.lastDays??null,next:s.days,due:s.due}};
+}
+// Rascunho a partir da questão (q = {id,s,o,a,e,d,t,k}); nunca inventa explicação.
+function fcDraft(q,att,now=new Date()){
+  const alt=q.a&&q.o&&q.o[q.a]!==undefined?`${q.a}) ${q.o[q.a]}`:(q.a||'—'),pend=!(q.e&&String(q.e).trim());
+  return{id:'fc:'+q.id,q:q.id,front:q.s,back:`Gabarito: ${alt}\n\n${pend?'(Explicação pendente: escreva aqui a regra ou o macete.)':q.e}`,d:q.d||'',t:q.t||'',k:q.k||'',
+    origin:att?(att.ok?'certa':'errada'):'marcada',reason:(att&&att.reason)||null,pending:pend,state:'rascunho',step:0,due:null,created:now.toISOString(),updated:now.toISOString(),reviews:0,lapses:0};
+}
+const fcIsDue=(c,tk)=>c.state==='ativo'&&!!c.due&&c.due<=tk;
+function fcDueList(cards,now=new Date()){const tk=dayKey(fcToday(now));return cards.filter(c=>fcIsDue(c,tk)).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0);}
+function fcCounts(cards,now=new Date()){
+  const tk=dayKey(fcToday(now)),c={hoje:0,atrasados:0,todos:cards.length,erradas:0,certas:0,rascunhos:0,dominados:0,ativos:0};
+  cards.forEach(x=>{if(x.state==='rascunho')c.rascunhos++;else if(x.state==='dominado')c.dominados++;else{c.ativos++;if(x.due===tk)c.hoje++;else if(x.due&&x.due<tk)c.atrasados++;}
+    if(x.origin==='errada')c.erradas++;if(x.origin==='certa')c.certas++;});
+  return c;
+}
+function fcDueText(c,now=new Date()){
+  if(c.state==='rascunho')return'rascunho (ainda sem agenda)';if(c.state==='dominado')return'dominado';
+  const t=fcToday(now),d=parseDay(c.due),n=fcDaysTo(t,d),dm=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');
+  return n<0?`atrasado ${-n} dia(s) (${dm})`:n===0?'vence hoje':n===1?`amanhã (${dm})`:`em ${n} dias (${dm})`;
+}
+function fcMotivosCount(atts){const m={atencao:0,esqueci:0,nao_sabia:0};atts.forEach(a=>{if(a.reason&&m[a.reason]!==undefined)m[a.reason]++;});return m;}
+// Mescla duas listas de cartões pelo id; vence a alteração mais recente (para a sincronização por arquivo)
+function fcMerge(a,b){const m=new Map(a.map(c=>[c.id,c]));b.forEach(c=>{const o=m.get(c.id);if(!o||(c.updated||'')>(o.updated||''))m.set(c.id,c);});return[...m.values()];}
+function fcMergeLogs(a,b){const k=r=>r.fc+'|'+r.at,m=new Map(a.map(r=>[k(r),r]));b.forEach(r=>{if(!m.has(k(r)))m.set(k(r),r);});return[...m.values()].sort((x,y)=>x.at<y.at?-1:1);}
+
+
+// ===== Flashcards no celular (2.7) — mesmo núcleo do desktop =====
+let CARDS=[],FCR=[],FCS=null;
+const saveCards=()=>{kv.set('cards',CARDS).catch(()=>{})};
+const saveFcr=()=>{kv.set('fcrev',FCR).catch(()=>{})};
+const cardOfQ=id=>CARDS.find(c=>c.q===id);
+const cardById=id=>CARDS.find(c=>c.id===id);
+const examISO=()=>(S.exam&&S.exam.date)||null;
+const lastAttM=id=>{let b=null;S.ans.forEach(a=>{if(a.q===id&&(!b||a.t>=b.t))b=a});return b};
+// rascunho criado por questão (nunca duplica); retorna true se criou
+function ensureDraftM(q){
+ if(cardOfQ(q.i))return false;
+ const a=lastAttM(q.i);
+ CARDS.push(fcDraft({id:q.i,s:q.s,o:q.o,a:q.a,e:q.e,d:q.d,t:q.t,k:q.k},a?{ok:a.ok,reason:a.r}:null));
+ saveCards();return true;
+}
+// ao responder: origem do cartão ainda rascunho passa a "certa" ou "errada"
+function cardOrigin(q,ok){const c=cardOfQ(q.i);if(c&&c.state==='rascunho'&&c.origin==='marcada'){c.origin=ok?'certa':'errada';c.updated=new Date().toISOString();saveCards()}}
+// painel "Por que errei?" / "Como foi?" abaixo do feedback
+function metaH(q){
+ const a=lastAttM(q.i);if(!a)return '';
+ const chips=a.ok
+  ?Object.entries(FC_CONF).map(([k,v])=>`<button class="ch ${a.c===k?'on':''}" onclick="setAttM('${q.i}','c','${k}')">${v.i} ${v.t}</button>`).join('')
+  :Object.entries(FC_MOTIVOS).map(([k,v])=>`<button class="ch ${a.r===k?'on':''}" onclick="setAttM('${q.i}','r','${k}')">${v.i} ${v.t}</button>`).join('');
+ const c=cardOfQ(q.i);
+ const line=!c?`<button class="sm" onclick="mkDraft('${q.i}')">🃏 Criar rascunho</button>`
+  :c.state==='rascunho'?`<span class="tag">📝 Rascunho</span> <button class="sm" onclick="openCard('${q.i}')">Conferir e ativar</button>`
+  :c.state==='dominado'?`<span class="tag ok-tag">🏆 Dominado</span>`
+  :`<span class="tag ok-tag">🃏 ${E(fcDueText(c))}</span>`;
+ return `<div id="fcm" class="fcm"><div class="fcr"><b>${a.ok?'Como foi?':'Por que errei?'}</b><div class="chs">${chips}</div></div><div class="fcr"><b>Flashcard</b><div>${line}</div></div></div>`;
+}
+function setAttM(qi,f,v){
+ const a=lastAttM(qi);if(!a)return;
+ a[f]=a[f]===v?null:v;save();
+ const c=cardOfQ(qi);
+ if(c&&f==='r'&&!a.ok&&c.origin==='errada'){c.reason=a.r;c.updated=new Date().toISOString();saveCards()}
+ const q=byId.get(qi);const fm=$('#fcm');if(fm&&q)fm.outerHTML=metaH(q);
+}
+function mkDraft(qi){const q=byId.get(qi);if(q&&ensureDraftM(q))toast('Rascunho criado. Confira na aba Flashcards.');const fm=$('#fcm');if(fm&&q)fm.outerHTML=metaH(q)}
+// ----- tela de flashcards (dentro de Revisar) -----
+const FCF_LB=[['agora','Revisar agora'],['todos','Todos'],['erradas','✘ Erradas'],['certas','✔ Certas'],['rascunhos','📝 Rascunhos'],['dominados','🏆 Dominados']];
+window.FCF=window.FCF||'agora';
+function fcFilt(F){
+ const all=CARDS;let l;
+ if(F==='agora')return fcDueList(all);
+ if(F==='erradas')l=all.filter(c=>c.origin==='errada'&&c.state!=='rascunho');
+ else if(F==='certas')l=all.filter(c=>c.origin==='certa'&&c.state!=='rascunho');
+ else if(F==='rascunhos')l=all.filter(c=>c.state==='rascunho');
+ else if(F==='dominados')l=all.filter(c=>c.state==='dominado');
+ else l=all.slice();
+ return l.sort((a,b)=>(a.due||'9')<(b.due||'9')?-1:1);
+}
+function fcView(){
+ const k=fcCounts(CARDS),due=fcDueList(CARDS).length,F=window.FCF,lw=lastWrong(),wrong=bank.filter(q=>lw.has(q.i)&&!cardOfQ(q.i)).length,shown=fcFilt(F).slice(0,30);
+ V(`<div class="card"><button class="ghost" onclick="go('rev')">← Revisar</button><b>🃏 Flashcards</b><p class="mut">Questões marcadas e erradas viram cartões. Quando você erra, o cartão volta no dia certo.</p>
+ <div class="grid"><div class="card"><b>${due}</b><small>para revisar agora</small></div><div class="card"><b>${k.hoje}</b><small>vencem hoje</small></div><div class="card"><b class="${k.atrasados?'acc-r':''}">${k.atrasados}</b><small>atrasados</small></div><div class="card"><b>${k.rascunhos}</b><small>rascunhos</small></div></div>
+ <button class="pri" style="width:100%" ${due?'':'disabled'} onclick="fcStart()">Revisar agora (${due})</button>
+ <button class="ghost" style="width:100%;margin-top:8px" ${wrong?'':'disabled'} onclick="fcBulk()">Criar rascunhos das erradas (${wrong})</button></div>
+ <div class="seg wrap">${FCF_LB.map(([f,l])=>`<button class="${F===f?'on':''}" onclick="window.FCF='${f}';fcView()">${l}</button>`).join('')}</div>
+ ${shown.map(c=>`<div class="card"><span class="tag">${E(c.d)} · ${E(c.t)}</span><p class="st">${E(c.front.slice(0,160))}${c.front.length>160?'…':''}</p><p class="mut">${E(FC_ORIGEM[c.origin]||'')}${c.reason?' · '+E(FC_MOTIVOS[c.reason].t):''} · ${E(fcDueText(c))}</p><button class="sm" onclick="openCard('${c.q}')">${c.state==='rascunho'?'Conferir e ativar':'Editar'}</button></div>`).join('')||'<div class="card"><p class="mut">Nenhum cartão neste filtro.</p></div>'}`);
+}
+function fcBulk(){const lw=lastWrong(),l=bank.filter(q=>lw.has(q.i)&&!cardOfQ(q.i));l.forEach(ensureDraftM);toast(l.length+' rascunho(s) criado(s)');window.FCF='rascunhos';fcView()}
+function openCard(qi){
+ const q=byId.get(qi);if(!q)return;ensureDraftM(q);const c=cardOfQ(qi),hist=FCR.filter(r=>r.fc===c.id);
+ V(`<div class="card"><button class="ghost" onclick="fcView()">← Voltar</button><b>${c.state==='rascunho'?'Rascunho de flashcard':'Flashcard'}</b>
+ <p class="mut">${E(c.d)} · ${E(c.t)}<br>Gabarito vinculado à questão: <b>${E(q.a)}</b> · ${E(FC_ORIGEM[c.origin]||'')}${c.pending?' · <span class="acc-y">explicação pendente</span>':''}</p>
+ <label class="fl">Frente (pergunta)<textarea id="ff" class="fi" rows="4">${E(c.front)}</textarea></label>
+ <label class="fl">Verso (resposta e explicação)<textarea id="fbk" class="fi" rows="6">${E(c.back)}</textarea></label>
+ <div class="row" style="flex-wrap:wrap"><button class="ghost" onclick="saveEdit('${qi}',false)">Salvar</button>${c.state==='rascunho'?`<button class="pri" onclick="saveEdit('${qi}',true)">Salvar e ativar</button>`:''}${c.state==='dominado'?`<button class="ghost" onclick="reopenCard('${qi}')">Voltar à revisão</button>`:''}</div>
+ <button class="ghost" style="width:100%;margin-top:10px" onclick="delCard('${qi}')">Excluir cartão</button>
+ ${hist.length?`<div class="hist"><b>Histórico</b>${hist.slice().reverse().map(r=>`<p class="mut">${E(new Date(r.at).toLocaleDateString('pt-BR'))} · ${E(FC_RES[r.result].i+' '+FC_RES[r.result].t)}${r.next!=null?' · próxima em '+r.next+' dia(s)':' · dominado'}</p>`).join('')}</div>`:''}</div>`);
+}
+function saveEdit(qi,activate){
+ const c=cardOfQ(qi),front=$('#ff').value.trim();if(!front){toast('A frente não pode ficar vazia.');return}
+ let n={...c,front,back:$('#fbk').value,pending:$('#fbk').value.includes('(Explicação pendente'),updated:new Date().toISOString()};
+ if(activate)n=fcActivate(n,new Date(),examISO());
+ CARDS[CARDS.indexOf(c)]=n;saveCards();toast(activate?'Ativado. Primeira revisão: '+fcDueText(n):'Salvo');fcView();
+}
+function reopenCard(qi){const c=cardOfQ(qi),n=fcReopen(c,new Date());CARDS[CARDS.indexOf(c)]=n;saveCards();toast('De volta à revisão');fcView()}
+function delCard(qi){const c=cardOfQ(qi);if(!c||!confirm('Excluir este flashcard e o histórico dele? A questão continua no banco.'))return;CARDS=CARDS.filter(x=>x!==c);FCR=FCR.filter(r=>r.fc!==c.id);saveCards();saveFcr();fcView()}
+// ----- sessão de revisão: pergunta, depois verso e 3 opções -----
+function fcStart(){const l=fcDueList(CARDS);if(!l.length){toast('Nenhum cartão para revisar agora');return}FCS={list:l.map(c=>c.id),i:0,show:false,res:{errei:0,dificil:0,facil:0}};renderFcS()}
+function renderFcS(){
+ while(FCS.i<FCS.list.length&&!cardById(FCS.list[FCS.i]))FCS.i++;
+ if(FCS.i>=FCS.list.length){const r=FCS.res,tot=r.errei+r.dificil+r.facil;
+  V(`<div class="card" style="text-align:center"><b>Revisão concluída</b><p>${tot} cartão(ões): ✘ ${r.errei} · ◐ ${r.dificil} · ✔ ${r.facil}</p><p class="mut">Cartões atrasados continuam na fila até serem respondidos.</p><button class="pri" style="width:100%" onclick="FCS=null;fcView()">Voltar aos flashcards</button></div>`);return}
+ const c=cardById(FCS.list[FCS.i]),ex=examISO(),prev=r=>{const s=fcSchedule(c,r,fcToday(),ex);return s.state==='dominado'?'dominado':s.days===0?'hoje':s.days===1?'1 dia':s.days+' dias'};
+ V(`<div class="card"><div class="bar"><b>Flashcard</b><span>${FCS.i+1}/${FCS.list.length}</span></div><small>${E(c.d)} · ${E(c.t)}</small><p class="fcf">${E(c.front)}</p>
+ ${FCS.show?`<div class="fcb">${E(c.back)}</div><div class="fcg"><button class="gr1" onclick="fcGrade('errei')">✘ Errei<small>volta em ${prev('errei')}</small></button><button class="gr2" onclick="fcGrade('dificil')">◐ Com dificuldade<small>volta em ${prev('dificil')}</small></button><button class="gr3" onclick="fcGrade('facil')">✔ Fácil<small>volta em ${prev('facil')}</small></button></div>`
+ :'<button class="pri" style="width:100%" onclick="FCS.show=true;renderFcS()">Mostrar resposta</button>'}
+ <button class="ghost" style="width:100%;margin-top:10px" onclick="FCS=null;fcView()">Sair</button></div>`);
+}
+function fcGrade(r){
+ const c=cardById(FCS.list[FCS.i]);if(!c)return;
+ const {card,log}=fcApplyReview(c,r,new Date(),examISO());
+ CARDS[CARDS.indexOf(c)]=card;FCR.push(log);saveCards();saveFcr();
+ FCS.res[r]++;FCS.i++;FCS.show=false;renderFcS();
+}
+// ----- diagnóstico dos erros (Painel > Desempenho) -----
+function diagCard(){
+ const m={atencao:0,esqueci:0,nao_sabia:0};S.ans.forEach(a=>{if(!a.ok&&a.r&&m[a.r]!==undefined)m[a.r]++});
+ const tot=m.atencao+m.esqueci+m.nao_sabia,wrong=S.ans.filter(a=>!a.ok).length,hits=S.ans.filter(a=>a.ok),ch=hits.filter(a=>a.c==='chute').length,du=hits.filter(a=>a.c==='duvida').length;
+ const rows=Object.entries(FC_MOTIVOS).map(([k,v])=>{const p=tot?Math.round(m[k]/tot*100):0;return `<div class="hrt"><span>${v.i} ${v.t}</span><b>${m[k]} <small>(${p}%)</small></b></div><div class="mbar"><i style="width:${p}%"></i></div><small class="mut">${E(v.dica)}</small>`}).join('');
+ return `<div class="card"><b>Diagnóstico dos erros</b><p class="mut">Por que você errou: mostra o que treinar</p>${tot?rows:'<p class="mut">Ao errar uma questão, escolha o motivo logo abaixo do resultado. O diagnóstico aparece aqui.</p>'}${tot&&wrong>tot?`<p class="mut">${wrong-tot} erro(s) ainda sem motivo.</p>`:''}<p class="mut">Acertos com chute: <b>${ch}</b> · com dúvida: <b>${du}</b></p></div>`;
+}
 function radar(it){const N=it.length;if(N<3)return '<p class="mut">Responda questões de pelo menos 3 itens para ver o radar.</p>';
  const R=92,cx=150,cy=118,pt=(i,r)=>[cx+r*Math.sin(2*Math.PI*i/N),cy-r*Math.cos(2*Math.PI*i/N)].map(x=>x.toFixed(1)),poly=f=>it.map((x,i)=>pt(i,f(x)).join(',')).join(' ');
  return `<svg viewBox="0 0 300 236" style="width:100%;max-width:340px">${[25,50,75,100].map(v=>`<polygon points="${poly(()=>R*v/100)}" fill="none" stroke="#9aa5bd66"/>`).join('')}${it.map((x,i)=>{const p=pt(i,R);return `<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="#9aa5bd66"/>`}).join('')}<polygon points="${poly(x=>R*x.p/100)}" fill="#526de544" stroke="#526de5" stroke-width="2"/>${it.map((x,i)=>{const a=pt(i,R*x.p/100),c=pt(i,R+13);return `<circle cx="${a[0]}" cy="${a[1]}" r="3" fill="#526de5"/><text x="${c[0]}" y="${c[1]}" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="currentColor">${i+1}</text>`}).join('')}<text x="${cx+3}" y="${cy-R*.5+3}" font-size="8" fill="#93a0bd">50%</text><text x="${cx+3}" y="${cy-R+3}" font-size="8" fill="#93a0bd">100%</text></svg><div class="lg">${it.map((x,i)=>`<div><b>${i+1}</b><span>${E(x.l)}</span><b>${x.p}% · ${x.n}</b></div>`).join('')}</div>`}
@@ -183,13 +400,14 @@ function dash(){const A=S.ans,T=A.filter(a=>isT(a.t)),ok=A.filter(a=>a.ok).lengt
  const head=`${S.run?`<div class="card"><b>Continuar de onde parou</b><p class="mut">${E(S.run.label)} · questão ${S.run.i+1} de ${S.run.ids.length}</p><button class="pri" style="width:100%" onclick="resume()">Continuar</button></div>`:''}
  <div class="grid"><div class="card"><b>${A.length}</b><small>respondidas</small></div><div class="card"><b>${A.length?Math.round(ok/A.length*100):0}%</b><small>acertos</small></div><div class="card"><b>${T.length}</b><small>hoje</small></div><div class="card"><b>${S.day.cy}</b><small>ciclos hoje</small></div><div class="card"><b>${fmt((S.day.fs||0)*1000)}</b><small>foco hoje</small></div><div class="card"><b>${fmt(sm(T))}</b><small>em questões hoje</small></div></div>
  <div class="seg tabs">${[['resumo','Resumo'],['desempenho','Desempenho'],['tempo','Tempo']].map(([k,l])=>`<button class="${DT===k?'on':''}" onclick="setDT('${k}')">${l}</button>`).join('')}</div>`;
- const resumo=`${consistCards()}
+ const dueN=fcDueList(CARDS).length;
+ const resumo=`${dueN?`<div class="card fcal"><b>🃏 ${dueN} flashcard(s) para revisar agora</b><button class="pri" style="width:100%;margin-top:8px" onclick="fcStart()">Revisar agora</button></div>`:''}${consistCards()}
  <div class="card"><b>Avanço no edital</b><p class="mut">Verde: tópicos resolvidos (todas as questões respondidas). Vermelho: o que ainda falta.</p>${donut([{l:'Tópicos resolvidos',v:TG,c:'#249b70'},{l:'Faltam resolver',v:TS.length-TG,c:'#d9534f'}],TP+'%','DO EDITAL')}<p class="mut">${TY} em andamento · ${TS.filter(o=>o.st==='r').length} ainda não iniciados · questões respondidas: ${new Set(A.map(a=>a.q)).size} de ${bank.length}</p>${[...new Set(TS.map(o=>o.d))].map(d=>{const l=TS.filter(o=>o.d===d),g=l.filter(o=>o.st==='g').length,p=Math.round(g/l.length*100);return `<small>${E(d)} — ${g} de ${l.length} tópicos (${p}%)</small><div class="bar2"><span class="g" style="width:${p}%"></span><span class="r" style="width:${100-p}%"></span></div>`}).join('')}</div>`;
  const desemp=`<div class="card"><b>Acertos e erros</b>${donut(pr(A),A.length,'RESPOSTAS')}</div><div class="card"><b>Hoje</b>${donut(pr(T),T.length,'HOJE')}</div>
- ${weakCard()}
+ ${diagCard()}${weakCard()}
  <div class="card"><b>Radar de acertos</b><div class="seg"><button class="${RM==='d'?'on':''}" onclick="RM='d';dash()">Disciplinas</button><button class="${RM==='a'?'on':''}" onclick="RM='a';dash()">Assuntos (12 mais)</button></div><p class="mut">Quanto mais perto da borda, maior a taxa de acertos.</p><div class="don">${radar(it)}</div></div>
  <div class="card"><b>Acertos e erros por assunto</b><p class="mut">Vermelho: abaixo de 50% · Amarelo: abaixo de 70%</p>${tp.length?`<table><tr><th>Assunto</th><th>✔</th><th>✘</th><th>%</th></tr>${tp.map(x=>{const [d,t]=x.k.split('|'),p=Math.round(x.ok/x.n*100);return `<tr class="${accC(p)}"><td>${E(t)}<br><small>${E(d)}</small></td><td>${x.ok}</td><td>${x.n-x.ok}</td><td>${p}%</td></tr>`}).join('')}</table>`:'<p class="mut">Responda questões para ver o desempenho por assunto.</p>'}</div>`;
- V(`${head}${DT==='desempenho'?desemp:DT==='tempo'?timeCards(A,T,ms,sm):resumo}<p class="mut" style="text-align:center">StudyQuest 2.6</p>`)}
+ V(`${head}${DT==='desempenho'?desemp:DT==='tempo'?timeCards(A,T,ms,sm):resumo}<p class="mut" style="text-align:center">StudyQuest 2.9</p>`)}
 
 function cfgView(sc){const kinds=['Todas','Básicas','Específicas'],k=window['K'+sc]||'Todas',st=sc==='study';
  const list=st?tstat().filter(o=>k==='Todas'||o.kd===k).sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:a.t<b.t?-1:1):[];window._tl=list;
@@ -210,7 +428,7 @@ const acc=()=>{const q=cur();run.ms[q.i]=(run.ms[q.i]||0)+Date.now()-run.q0;run.
 const fbH=q=>{const ok=run.sel[q.i]===q.a;return `<p><b>${ok?'✔ Correto!':'✘ Errado. Gabarito: '+E(q.a)}</b></p><div class="ex">${E(q.e)}</div>`};
 function rq(){const q=cur(),dn=run.done[q.i],s=run.sel[q.i],sim=run.mode==='sim',sk=run.strike[q.i]||{};run.q0=Date.now();lastTap={l:'',q:'',t:0,p:null};
  V(`<div class="bar"><b>${E(run.label)}</b><span>${run.i+1}/${run.l.length}</span></div><div class="card"><small>${E(q.d)} · ${E(q.t)} · ${E(q.n||'')}</small><p class="st">${E(q.s)}</p>
- ${LET.filter(l=>q.o[l]).map(l=>`<button class="opt ${dn?(l===q.a?'ok':l===s?'bad':''):(l===s?'sel':'')} ${sk[l]?'x':''}" id="o${l}" onclick="tapOpt('${l}')"><b>${l}</b><span>${E(q.o[l])}</span></button>`).join('')}${dn?'':'<p class="hint">1 toque seleciona · 2 toques riscam a alternativa</p>'}<div id="fb">${dn?fbH(q):''}</div>
+ ${LET.filter(l=>q.o[l]).map(l=>`<button class="opt ${dn?(l===q.a?'ok':l===s?'bad':''):(l===s?'sel':'')} ${sk[l]?'x':''}" id="o${l}" onclick="tapOpt('${l}')"><b>${l}</b><span>${E(q.o[l])}</span></button>`).join('')}${dn?'':'<p class="hint">1 toque seleciona · 2 toques riscam a alternativa</p>'}<div id="fb">${dn?fbH(q)+metaH(q):''}</div>
  <div class="row"><button class="ghost ${S.marks.includes(q.i)?'gr':''}" onclick="mark(this)">${S.marks.includes(q.i)?'★ Marcada':'☆ Marcar'}</button>${sim||dn?'':'<button class="pri" onclick="submit()">Responder</button>'}</div></div>
  <div class="row"><button class="ghost" onclick="mv(-1)" ${run.i?'':'disabled'}>← Anterior</button><button class="ghost" onclick="mv(1)" ${run.i+1>=run.l.length?'disabled':''}>Próxima →</button></div>
  <button class="pri" style="width:100%;margin-top:8px" onclick="finish()">${sim?'Finalizar simulado':'Encerrar e ver resultado'}</button>`)}
@@ -224,27 +442,30 @@ function tapOpt(l){const q=cur();if(run.done[q.i])return;const now=Date.now(),sk
  else{lastTap={l,q:q.i,t:now,p:{sel:run.sel[q.i],struck:!!sk[l]}};delete sk[l];run.sel[q.i]=l}
  paintOpts();rsave()}
 function choose(l){const q=cur();if(run.done[q.i])return;run.sel[q.i]=l;document.querySelectorAll('.opt').forEach(b=>b.classList.toggle('sel',b.id==='o'+l));rsave()}
-function mark(b){const q=cur(),i=S.marks.indexOf(q.i);i<0?S.marks.push(q.i):S.marks.splice(i,1);save();b.textContent=i<0?'★ Marcada':'☆ Marcar';b.classList.toggle('gr',i<0)}
-function rec(q){const ok=run.sel[q.i]===q.a;S.ans.push({q:q.i,a:run.sel[q.i],ok,t:new Date().toISOString(),ms:run.ms[q.i]||0,m:run.mode});run.done[q.i]=true;
+function mark(b){const q=cur(),i=S.marks.indexOf(q.i);i<0?S.marks.push(q.i):S.marks.splice(i,1);save();b.textContent=i<0?'★ Marcada':'☆ Marcar';b.classList.toggle('gr',i<0);if(i<0&&ensureDraftM(q))toast('Rascunho de flashcard criado');const fm=$('#fcm');if(fm)fm.outerHTML=metaH(q)}
+function rec(q){const ok=run.sel[q.i]===q.a;cardOrigin(q,ok);S.ans.push({q:q.i,a:run.sel[q.i],ok,t:new Date().toISOString(),ms:run.ms[q.i]||0,m:run.mode});run.done[q.i]=true;
  if(run.mode==='rev'&&ok){const i=S.marks.indexOf(q.i);if(i>=0)S.marks.splice(i,1)}   // revisou e acertou: sai da lista de revisão
  save()}
 function submit(){const q=cur();if(!run.sel[q.i])return toast('Escolha uma alternativa');acc();rec(q);rsave();rq()}
 function mv(d){acc();run.i=Math.max(0,Math.min(run.l.length-1,run.i+d));rsave();rq()}
+function explParts(exp){const clean=s=>String(s||'').replace(/([^\s-])-\s+(?=[a-zà-ú])/g,'$1');const parts=clean(exp).split(/\n(?=\([A-E]\) )/);const comment=(parts[0]||'').trim();const alts=parts.slice(1).map(p=>{const m=p.match(/^\(([A-E])\)\s*([\s\S]*)$/);return m?{k:m[1],t:m[2].trim()}:null}).filter(Boolean);return{comment,alts}}
+function explM(q,chosen){const {comment,alts}=explParts(q.e);const gab=q.o&&q.o[q.a]!==undefined?`${q.a}) ${q.o[q.a]}`:'';return `<div class="fb-head"><span>Sua resposta: <b>${E(chosen||'não respondida')}</b> · Gabarito: <b>${E(q.a||'—')}</b></span></div>${gab?`<div class="fb-gab"><small>Alternativa correta</small><div>${E(gab)}</div></div>`:''}<div class="fb-sec"><b>Comentário</b><p>${comment?E(comment).replace(/\n/g,'<br>'):'Esta questão ainda não tem comentário cadastrado.'}</p></div>${alts.length?`<div class="fb-sec"><b>Análise das alternativas</b><ul class="fb-alts">${alts.map(a=>{const ok=a.k===q.a;return `<li class="${ok?'alt-ok':'alt-no'}${a.k===chosen?' alt-mine':''}"><strong>${ok?'✔':'✘'} ${E(a.k)})</strong> ${E(a.t)}${a.k===chosen?' <em>(sua escolha)</em>':''}</li>`}).join('')}</ul></div>`:''}`}
 function finish(){acc();if(run.mode==='sim')run.l.forEach(q=>{if(run.sel[q.i]&&!run.done[q.i])rec(q)});
+ const simH=run.mode==='sim'?run.l.map((q,i)=>{const ch=run.sel[q.i],st=!ch?'Em branco':ch===q.a?'Acertou':'Errou';return `<div class="card"><span class="tag">Questão ${i+1} · ${st}</span><p class="st">${E(q.s)}</p><div class="fb-res">${explM(q,ch)}</div></div>`}).join(''):'';
  const an=run.l.filter(q=>run.done[q.i]),ok=an.filter(q=>run.sel[q.i]===q.a).length,w=an.filter(q=>run.sel[q.i]!==q.a),tot=Object.values(run.ms).reduce((a,b)=>a+b,0);
  V(`<div class="card"><b>${E(run.label)} concluído</b><p>${ok} acertos · ${w.length} erros · ${run.l.length-an.length} em branco</p><p class="mut">Tempo nas questões: ${fmt(tot)} (${an.length?Math.round(tot/an.length/1000):0} s por questão)</p></div>
- ${w.map(q=>`<div class="card"><small>${E(q.t)}</small><p class="st">${E(q.s.slice(0,220))}${q.s.length>220?'…':''}</p><p>Você: <b>${E(run.sel[q.i])}</b> · Gabarito: <b>${E(q.a)}</b></p></div>`).join('')}`);S.run=null;save();run=null}
+ ${run.mode==='sim'?simH:w.map(q=>`<div class="card"><small>${E(q.t)}</small><p class="st">${E(q.s.slice(0,220))}${q.s.length>220?'…':''}</p><p>Você: <b>${E(run.sel[q.i])}</b> · Gabarito: <b>${E(q.a)}</b></p></div>`).join('')}`);S.run=null;save();run=null}
 // Pendente de revisão = a ÚLTIMA resposta foi errada (ou a questão está marcada). Acertou na revisão: sai da lista.
 const lastWrong=()=>{const m=new Map();[...S.ans].sort((a,b)=>a.t<b.t?-1:a.t>b.t?1:0).forEach(a=>m.set(a.q,!a.ok));return new Set([...m].filter(([,w])=>w).map(([q])=>q))};
 let RG='todas';
 // Grupos da revisão (dentro de cada categoria): err = última resposta errada · acm = marcada e acertou · sem = marcada e ainda sem resposta
-const revG=(k,g='todas')=>{const lw=lastWrong(),done=new Set(S.ans.map(a=>a.q));return bank.filter(q=>{if(q.k!==k)return false;const err=lw.has(q.i),m=S.marks.includes(q.i);return g==='err'?err:g==='acm'?m&&!err&&done.has(q.i):g==='sem'?m&&!done.has(q.i):(err||m)})};
+const revG=(k,g='todas')=>{const lw=lastWrong(),done=new Set(S.ans.map(a=>a.q));return bank.filter(q=>{if(q.k!==k)return false;const cd=cardOfQ(q.i);if(cd&&cd.state!=='rascunho')return false;const err=lw.has(q.i),m=S.marks.includes(q.i);return g==='err'?err:g==='acm'?m&&!err&&done.has(q.i):g==='sem'?m&&!done.has(q.i):(err||m)})};
 const revL=k=>revG(k,'todas');
 function rev(){if(RG==='sem'&&!revG(RK,'sem').length)RG='todas';
  const l=revG(RK,RG),lw=lastWrong(),done=new Set(S.ans.map(a=>a.q)),n=g=>revG(RK,g).length,
  chips=[['todas','Todas'],['err','✘ Errei'],['acm','★ Acertei, mas marquei'],['sem','★ Marcadas sem responder']].filter(([g])=>g!=='sem'||n('sem')>0),
  badge=q=>(lw.has(q.i)?'<span class="bd r">✘ errei</span>':done.has(q.i)?'<span class="bd ok">✔ acertei</span>':'<span class="bd n">sem resposta</span>')+(S.marks.includes(q.i)?'<span class="bd g">★ marcada</span>':'');
- V(`<div class="card"><b>Revisar erros e marcadas</b><div class="seg">${['Básicas','Específicas'].map(k=>`<button class="${RK===k?'on':''}" onclick="RK='${k}';rev()">${k} (${revL(k).length})</button>`).join('')}</div>
+ V(`<button class="ghost fcgo" onclick="fcView()">🃏 Flashcards${CARDS.length&&fcDueList(CARDS).length?' · '+fcDueList(CARDS).length+' para revisar':''}</button><div class="card"><b>Revisar erros e marcadas</b><div class="seg">${['Básicas','Específicas'].map(k=>`<button class="${RK===k?'on':''}" onclick="RK='${k}';rev()">${k} (${revL(k).length})</button>`).join('')}</div>
  <div class="seg wrap">${chips.map(([g,lb])=>`<button class="${RG===g?'on':''}" onclick="RG='${g}';rev()">${lb} (${n(g)})</button>`).join('')}</div>
  <button class="pri" style="width:100%" ${l.length?'':'disabled'} onclick="begin(revG(RK,RG),'rev','Revisão · '+RK)">Estudar estas ${l.length} questões</button></div>
  ${l.slice(0,40).map(q=>`<div class="card"><div>${badge(q)}</div><small>${E(q.t)}</small><p class="st">${E(q.s.slice(0,160))}${q.s.length>160?'…':''}</p></div>`).join('')||'<div class="card"><p class="mut">Nada pendente neste grupo. Continue praticando!</p></div>'}
@@ -252,12 +473,15 @@ function rev(){if(RG==='sem'&&!revG(RK,'sem').length)RG='todas';
  <div class="card"><b>Banco de questões</b><p class="mut">${bank.length} questões neste aparelho.</p><button class="ghost" onclick="imp()">Importar outro banco</button></div>`)}
 function bkOut(){const t=JSON.stringify(S);$('#bk').value=t;$('#bk').select();try{navigator.clipboard.writeText(t).then(()=>toast('Copiado'),()=>toast('Selecione e copie o texto'))}catch(e){toast('Selecione e copie o texto')}}
 function bkApply(txt){const a=txt.indexOf('{'),b=txt.lastIndexOf('}');let d;try{d=JSON.parse(txt.slice(a,b+1))}catch(e){return toast('Arquivo ou texto inválido (cortado?)')}
+ if(!Array.isArray(d.ans)&&Array.isArray(d.answers)){const MM={study:'study',simulado:'sim',revisao:'rev'};d={...d,ans:d.answers.map(x=>({q:x.questionId,a:x.answer,ok:!!x.correct,t:x.at,ms:x.timeMs||0,m:MM[x.mode]||'study',r:x.reason||null,c:x.confidence||null})),cards:d.flashcards||[],reviews:(d.fcReviews||[]).map(r=>({fc:r.fc,at:r.at,result:r.result,prev:r.prev,next:r.next,due:r.due}))}}
  if(!Array.isArray(d.ans))return toast('Não parece um backup do StudyQuest');
+ const cs=Array.isArray(d.cards)?d.cards:[];cs.forEach(c=>{if(!c||!c.id)return;const o=CARDS.findIndex(x=>x.id===c.id);if(o<0)CARDS.push(c);else if((c.updated||'')>(CARDS[o].updated||''))CARDS[o]=c});saveCards();
+ const rs=Array.isArray(d.reviews)?d.reviews:[],rk=r=>r.fc+'|'+r.at,rset=new Set(FCR.map(rk));rs.forEach(r=>{if(r&&!rset.has(rk(r))){FCR.push(r);rset.add(rk(r))}});FCR.sort((x,y)=>x.at<y.at?-1:1);saveFcr();
  const k=x=>x.q+'|'+x.t,have=new Set(S.ans.map(k));let n=0;d.ans.forEach(x=>{if(x&&x.q&&!have.has(k(x))){S.ans.push(x);have.add(k(x));n++}});
  (d.marks||[]).forEach(m=>{if(!S.marks.includes(m))S.marks.push(m)});S.ans.sort((x,y)=>x.t<y.t?-1:1);save();toast(n+' respostas somadas ao progresso');go('dash')}
 function bkIn(){bkApply($('#bk').value)}
 async function bkLoad(f){if(f)bkApply(await f.text())}
-async function bkFile(){const txt=JSON.stringify(S),f=new File([txt],'backupquest-'+new Date().toISOString().slice(0,10)+'.json',{type:'application/json'});
+async function bkFile(){const txt=JSON.stringify({...S,cards:CARDS,reviews:FCR}),f=new File([txt],'backupquest-'+new Date().toISOString().slice(0,10)+'.json',{type:'application/json'});
  try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Backup StudyQuest'});return toast('Backup compartilhado')}}catch(e){if(e&&e.name==='AbortError')return}
  try{const u=URL.createObjectURL(f),l=document.createElement('a');l.href=u;l.download=f.name;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast('Arquivo baixado: '+f.name)}catch(e){toast('Não consegui salvar o arquivo')}}
 function imp(){V(`<div class="card"><b>Carregar o banco de questões</b><p class="mut">Escolha o arquivo <b>questoes-mobile.json</b> (enviado por Drive, WhatsApp ou cabo). Isso é feito uma única vez; depois o app funciona sem internet.</p><input type="file" id="bf" accept=".json,application/json"><p id="bm" class="mut"></p></div>`);
@@ -279,6 +503,6 @@ document.addEventListener('visibilitychange',pTick);
 [['cf','f'],['cb','b'],['cl','l'],['ce','e']].forEach(([id,k])=>{const e=$('#'+id);e.value=S.cfg[k];e.onchange=()=>{S.cfg[k]=Math.max(1,+e.value||1);save();if(!P.run){P.rem=pm(P.ph);pr()}}});
 $('#ca').checked=!!S.cfg.a;$('#ca').onchange=e=>{S.cfg.a=e.target.checked?1:0;save()};$('#cs').checked=!!S.cfg.s;$('#cs').onchange=e=>{S.cfg.s=e.target.checked?1:0;save()};
 pr();try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
-kv.get('bank').then(b=>{if(b&&b.length){setBank(b);go('dash')}else imp()}).catch(imp);
+Promise.all([kv.get('bank'),kv.get('cards'),kv.get('fcrev')]).then(([b,c,r])=>{CARDS=c||[];FCR=r||[];if(b&&b.length){setBank(b);go('dash')}else imp()}).catch(imp);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script></body></html>

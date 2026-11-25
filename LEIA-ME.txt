@@ -40,3 +40,16 @@ VERSAO 2.6
 - Painel em abas: Resumo, Desempenho e Tempo.
 - Tabela de acertos por assunto sem bolinhas: linha vermelha abaixo de 50% e amarela abaixo de 70%.
 - Linha do tempo de estudos (dia a dia), horas por dia (grafico), horas por assunto ou disciplina e pontos fracos.
+
+VERSAO 2.7
+- Flashcards: ao errar, escolha o motivo (falta de atencao, esqueci, nao sabia); ao acertar, a confianca (certeza, duvida, chute).
+- Marcar uma questao cria um rascunho de flashcard (um por questao, sem duplicar), editavel antes de ativar.
+- Revisar > Flashcards: revisao com pergunta primeiro, depois verso e 3 opcoes (errei, com dificuldade, facil). Agenda 1/7/15/30 dias, comprimida pela data da prova.
+- Diagnostico dos erros no Painel (aba Desempenho).
+- Backup em arquivo leva cartoes e revisoes; restaurar soma sem duplicar. Aceita tambem o backup do desktop 2.0.
+
+VERSAO 2.8
+- Menu hamburguer (☰) no canto superior: abre a gaveta com Painel, Estudar, Simulado, Revisar, Flashcards e o modo escuro/claro. Some a barra de baixo.
+
+VERSAO 2.9
+- Simulado: durante a prova, so registra a resposta (sem gabarito). Ao finalizar, mostra cada questao com resposta, alternativa correta, comentario e analise das alternativas.
