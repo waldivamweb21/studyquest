@@ -53,3 +53,8 @@ VERSAO 2.8
 
 VERSAO 2.9
 - Simulado: durante a prova, so registra a resposta (sem gabarito). Ao finalizar, mostra cada questao com resposta, alternativa correta, comentario e analise das alternativas.
+
+VERSAO 3.0
+- Nova aba "Questoes do Gran" (menu): importa o questoes-gran.json gerado pelo importador do computador.
+- Banco do Gran separado do ACE: estudo, simulado, revisao e painel do Gran tem estatisticas proprias.
+- O banco do Gran fica so neste aparelho; nao entra no backup em arquivo.

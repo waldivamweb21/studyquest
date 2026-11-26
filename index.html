@@ -69,6 +69,8 @@ textarea.fi{width:100%;padding:9px;border-radius:10px;border:1px solid var(--lin
 .fb-alts li{padding:8px 10px;border-radius:9px;border:1px solid var(--line);font-size:13px;line-height:1.5}
 .fb-alts li.alt-ok{border-color:#249b70;background:rgba(36,155,112,.14)}.fb-alts li.alt-mine{border-width:2px}
 .fb-res{margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--line)}
+/* 3.0: banco do Gran */
+.fi{width:100%;padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin:8px 0 6px;font:inherit}
 /* 2.8: menu hambúrguer */
 #burger{font-size:20px;line-height:1;padding:6px 10px}
 .drawer[hidden]{display:none}
@@ -123,11 +125,12 @@ button.tp{display:flex;align-items:center;justify-content:space-between;gap:8px;
 <div class="scrim" onclick="closeMenu()"></div>
 <nav class="dmenu" aria-label="Menu principal">
 <div class="dm-head"><b>📚 StudyQuest</b><button class="sm" onclick="closeMenu()" aria-label="Fechar menu">✕</button></div>
-<button data-v="dash" onclick="go('dash')">▦ Painel</button>
-<button data-v="study" onclick="go('study')">◎ Estudar</button>
-<button data-v="sim" onclick="go('sim')">▤ Simulado</button>
-<button data-v="rev" onclick="go('rev')">↻ Revisar</button>
-<button onclick="closeMenu();fcView()">🃏 Flashcards</button>
+<button data-v="dash" onclick="goAce('dash')">▦ Painel</button>
+<button data-v="study" onclick="goAce('study')">◎ Estudar</button>
+<button data-v="sim" onclick="goAce('sim')">▤ Simulado</button>
+<button data-v="rev" onclick="goAce('rev')">↻ Revisar</button>
+<button onclick="goGran()">📘 Questões do Gran</button>
+<button onclick="closeMenu();setCtx('ace');fcView()">🃏 Flashcards</button>
 <button onclick="theme();closeMenu()">🌓 Modo escuro / claro</button>
 </nav></div>
 <script>
@@ -254,6 +257,42 @@ function fcMergeLogs(a,b){const k=r=>r.fc+'|'+r.at,m=new Map(a.map(r=>[k(r),r]))
 
 // ===== Flashcards no celular (2.7) — mesmo núcleo do desktop =====
 let CARDS=[],FCR=[],FCS=null;
+let GBANK=[],CTX='ace',ACE_SAVE=null;
+// Troca o banco ativo: 'gran' usa GBANK; 'ace' volta ao banco do ACE. Painel, estudo e revisão leem o banco ativo.
+function setCtx(c){
+ if(c===CTX)return;
+ if(c==='gran'){ACE_SAVE={bank,byId};bank=GBANK;byId=new Map(GBANK.map(q=>[q.i,q]));CTX='gran'}
+ else{if(ACE_SAVE){bank=ACE_SAVE.bank;byId=ACE_SAVE.byId;ACE_SAVE=null}CTX='ace'}
+}
+const goAce=v=>{setCtx('ace');go(v)};
+const granGo=v=>{setCtx('gran');go(v)};
+function goGran(){closeMenu();setCtx('gran');V(granCardHTML());bindGranFile()}
+function bindGranFile(){const gf=$('#gf');if(gf)gf.onchange=e=>granLoad(e.target.files[0])}
+function granCardHTML(){
+ const n=GBANK.length,pend=GBANK.filter(q=>q.avisos&&q.avisos.length).length;
+ if(!n)return importCardGran();
+ return `<div class="card"><b>📘 Questões do Gran</b><p class="mut">${n} questões neste aparelho${pend?` · ${pend} para conferir`:''}. Estatísticas separadas das do ACE.</p>
+ <button class="pri" style="width:100%" onclick="granGo('study')">Estudar por assunto</button>
+ <button class="ghost" style="width:100%;margin-top:8px" onclick="granGo('sim')">Simulado completo</button>
+ <button class="ghost" style="width:100%;margin-top:8px" onclick="granGo('rev')">Revisar erros do Gran</button>
+ <button class="ghost" style="width:100%;margin-top:8px" onclick="granGo('dash')">Painel do Gran</button>
+ <button class="ghost" style="width:100%;margin-top:8px" onclick="granReplaceCard()">Trocar banco do Gran</button></div>`;
+}
+function importCardGran(){return `<div class="card"><b>📘 Questões do Gran</b><p class="mut">Ainda não há banco do Gran neste aparelho. Gere o <b>questoes-gran.json</b> no computador com o importador e escolha o arquivo aqui. Ele fica guardado só neste celular, separado do ACE.</p><input type="file" id="gf" class="fi" accept=".json,application/json"><p id="gm" class="mut"></p></div>`}
+function granReplaceCard(){V(importCardGran());bindGranFile()}
+async function granLoad(f){
+ const m=$('#gm');
+ try{
+  const d=JSON.parse(await f.text()),arr=Array.isArray(d)?d:(d.questoes||[]);
+  const ok=arr.filter(q=>q&&q.id&&q.s&&q.o&&Object.keys(q.o).length>=2);
+  if(!ok.length)throw 0;
+  GBANK=ok.map(q=>({i:String(q.id),k:'Gran',d:q.d||'Sem disciplina',t:q.t||q.d||'Sem assunto',n:null,s:q.s,o:q.o,a:q.a||'',e:q.e||'',avisos:Array.isArray(q.avisos)?q.avisos:[]}));
+  if(CTX==='gran'){byId=new Map(GBANK.map(q=>[q.i,q]));bank=GBANK}
+  await kv.set('granBank',GBANK);toast(GBANK.length+' questões do Gran carregadas');
+  V(granCardHTML());bindGranFile();
+ }catch(e){if(m)m.textContent='Arquivo inválido. Use o questoes-gran.json gerado pelo importador.'}
+}
+
 const saveCards=()=>{kv.set('cards',CARDS).catch(()=>{})};
 const saveFcr=()=>{kv.set('fcrev',FCR).catch(()=>{})};
 const cardOfQ=id=>CARDS.find(c=>c.q===id);
@@ -407,7 +446,7 @@ function dash(){const A=S.ans,T=A.filter(a=>isT(a.t)),ok=A.filter(a=>a.ok).lengt
  ${diagCard()}${weakCard()}
  <div class="card"><b>Radar de acertos</b><div class="seg"><button class="${RM==='d'?'on':''}" onclick="RM='d';dash()">Disciplinas</button><button class="${RM==='a'?'on':''}" onclick="RM='a';dash()">Assuntos (12 mais)</button></div><p class="mut">Quanto mais perto da borda, maior a taxa de acertos.</p><div class="don">${radar(it)}</div></div>
  <div class="card"><b>Acertos e erros por assunto</b><p class="mut">Vermelho: abaixo de 50% · Amarelo: abaixo de 70%</p>${tp.length?`<table><tr><th>Assunto</th><th>✔</th><th>✘</th><th>%</th></tr>${tp.map(x=>{const [d,t]=x.k.split('|'),p=Math.round(x.ok/x.n*100);return `<tr class="${accC(p)}"><td>${E(t)}<br><small>${E(d)}</small></td><td>${x.ok}</td><td>${x.n-x.ok}</td><td>${p}%</td></tr>`}).join('')}</table>`:'<p class="mut">Responda questões para ver o desempenho por assunto.</p>'}</div>`;
- V(`${head}${DT==='desempenho'?desemp:DT==='tempo'?timeCards(A,T,ms,sm):resumo}<p class="mut" style="text-align:center">StudyQuest 2.9</p>`)}
+ V(`${head}${DT==='desempenho'?desemp:DT==='tempo'?timeCards(A,T,ms,sm):resumo}<p class="mut" style="text-align:center">StudyQuest 3.0</p>`)}
 
 function cfgView(sc){const kinds=['Todas','Básicas','Específicas'],k=window['K'+sc]||'Todas',st=sc==='study';
  const list=st?tstat().filter(o=>k==='Todas'||o.kd===k).sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:a.t<b.t?-1:1):[];window._tl=list;
@@ -486,7 +525,7 @@ async function bkFile(){const txt=JSON.stringify({...S,cards:CARDS,reviews:FCR})
  try{const u=URL.createObjectURL(f),l=document.createElement('a');l.href=u;l.download=f.name;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast('Arquivo baixado: '+f.name)}catch(e){toast('Não consegui salvar o arquivo')}}
 function imp(){V(`<div class="card"><b>Carregar o banco de questões</b><p class="mut">Escolha o arquivo <b>questoes-mobile.json</b> (enviado por Drive, WhatsApp ou cabo). Isso é feito uma única vez; depois o app funciona sem internet.</p><input type="file" id="bf" accept=".json,application/json"><p id="bm" class="mut"></p></div>`);
  $('#bf').onchange=e=>loadFile(e.target.files[0])}
-async function loadFile(f){const m=$('#bm');try{const b=JSON.parse(await f.text());
+async function loadFile(f){const m=$('#bm');setCtx('ace');try{const b=JSON.parse(await f.text());
  if(!Array.isArray(b)||!b.length||!b.every(q=>q.i&&q.s&&q.o))throw 0;await kv.set('bank',b);setBank(b);toast(b.length+' questões carregadas');go('dash')}catch(e){m.textContent='Arquivo inválido. Use o questoes-mobile.json gerado para o StudyQuest.'}}
 // ---- pomodoro ----
 const P={ph:'f',rem:0,run:false,end:0,tm:null,au:null},pm=p=>(p==='f'?S.cfg.f:p==='l'?S.cfg.l:S.cfg.b)*60;P.rem=pm('f');
@@ -503,6 +542,6 @@ document.addEventListener('visibilitychange',pTick);
 [['cf','f'],['cb','b'],['cl','l'],['ce','e']].forEach(([id,k])=>{const e=$('#'+id);e.value=S.cfg[k];e.onchange=()=>{S.cfg[k]=Math.max(1,+e.value||1);save();if(!P.run){P.rem=pm(P.ph);pr()}}});
 $('#ca').checked=!!S.cfg.a;$('#ca').onchange=e=>{S.cfg.a=e.target.checked?1:0;save()};$('#cs').checked=!!S.cfg.s;$('#cs').onchange=e=>{S.cfg.s=e.target.checked?1:0;save()};
 pr();try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
-Promise.all([kv.get('bank'),kv.get('cards'),kv.get('fcrev')]).then(([b,c,r])=>{CARDS=c||[];FCR=r||[];if(b&&b.length){setBank(b);go('dash')}else imp()}).catch(imp);
+Promise.all([kv.get('bank'),kv.get('cards'),kv.get('fcrev'),kv.get('granBank')]).then(([b,c,r,g])=>{CARDS=c||[];FCR=r||[];GBANK=g||[];if(b&&b.length){setBank(b);go('dash')}else imp()}).catch(imp);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script></body></html>
